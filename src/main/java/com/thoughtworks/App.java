@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 
 public class App {
-  public static HashMap[] maps = getIdMaps();
-  public static HashMap<String, String> idNameMap = maps[0];
-  public static HashMap<String, Double> idPriceMap = maps[1];
+  private static Maps maps = getMaps();
+  private static HashMap<String, String> idNameMap = maps.idNameMap;
+  private static HashMap<String, Double> idPriceMap = maps.idPriceMap;
 
   public void main(String[] args) {
     Scanner scan = new Scanner(System.in);
@@ -21,35 +21,29 @@ public class App {
     System.out.println(summary);
   }
 
-  /**
-   * 接收用户选择的菜品和数量，返回计算后的汇总信息
-   *
-   * @param selectedItems 选择的菜品信息
-   */
   public static String bestCharge(String selectedItems) {
     String[] itemsArray = selectedItems.split(",");
-    CostDetails[] costDetailsList = new CostDetails[itemsArray.length];
-    double fullCost = 0;
+    CostDetails[] costDetailsArray = new CostDetails[itemsArray.length];
+    double totalCost = 0;
+
     for (int i = 0, len = itemsArray.length; i < len; i++) {
       String[] idAndCount = itemsArray[i].split(" x ");
-      CostDetails currentDetails = new CostDetails(idAndCount[0], idAndCount[1]);
-      costDetailsList[i] = currentDetails;
-      fullCost += currentDetails.price * currentDetails.count;
+      CostDetails curCostDetails = new CostDetails(idAndCount[0], idAndCount[1]);
+      costDetailsArray[i] = curCostDetails;
+      totalCost += curCostDetails.price * curCostDetails.count;
     }
+
     String promotionInfo = "";
-    double finalCost = fullCost;
+    double finalCost = totalCost;
     for (Promotion promotion : getPromotions()) {
-      PromotionDetails promotionDetails = promotion.getPromotionDetails(fullCost, costDetailsList);
-      if (promotionDetails.cost < finalCost) {
-        finalCost = promotionDetails.cost;
-        promotionInfo = promotionDetails.info;
+      PromoDetails promoDetails = promotion.getPromoDetails(totalCost, costDetailsArray);
+      if (promoDetails.cost < finalCost) {
+        finalCost = promoDetails.cost;
+        promotionInfo = promoDetails.info;
       }
     }
-    StringBuilder summary = new StringBuilder();
-    summary.append(renderDetails(costDetailsList));
-    summary.append(renderPromo(promotionInfo));
-    summary.append(renderFooter(finalCost));
-    return summary.toString();
+
+    return renderDetails(costDetailsArray) + renderPromo(promotionInfo) + renderFooter(finalCost);
   }
 
   private static String renderDetails(CostDetails[] costDetailsList) {
@@ -72,6 +66,96 @@ public class App {
   private static String renderFooter(double totalCost) {
     return MessageFormat.format("总计：{0}元\n===================================", totalCost);
   }
+
+  private static class Maps {
+    private HashMap<String, String> idNameMap;
+    private HashMap<String, Double> idPriceMap;
+
+    Maps(HashMap<String, String> idNameMap, HashMap<String, Double> idPriceMap) {
+      this.idNameMap = idNameMap;
+      this.idPriceMap = idPriceMap;
+    }
+  }
+
+  private static Maps getMaps() {
+    String[] ids = getItemIds();
+    String[] names = getItemNames();
+    double[] prices = getItemPrices();
+    HashMap<String, String> idNameMap = new HashMap<>();
+    HashMap<String, Double> idPriceMap = new HashMap<>();
+
+    for (int i = 0, len = ids.length; i < len; i++) {
+      idNameMap.put(ids[i], names[i]);
+      idPriceMap.put(ids[i], prices[i]);
+    }
+
+    return new Maps(idNameMap, idPriceMap);
+  }
+
+  public static class CostDetails {
+    String id;
+    String name;
+    double price;
+    int count;
+
+    CostDetails(String id, String count) {
+      this.id = id;
+      this.name = idNameMap.get(id);
+      this.price = idPriceMap.get(id);
+      this.count = Integer.parseInt(count);
+    }
+  }
+
+  private static class PromoDetails {
+    String type;
+    double cost;
+    String info;
+
+    PromoDetails(String type, double cost, String info) {
+      this.type = type;
+      this.cost = cost;
+      this.info = info;
+    }
+  }
+
+  private abstract static class Promotion {
+    abstract PromoDetails getPromoDetails(double fullCost, CostDetails[] costDetailsList);
+  }
+
+
+  private static class SimplePromotion extends Promotion {
+    String type = "满30减6元";
+
+    @Override
+    PromoDetails getPromoDetails(double fullCost, CostDetails[] costDetailsList) {
+      return new PromoDetails(this.type, fullCost >= 30 ? fullCost - 6 : fullCost, "满30减6元，省6元");
+    }
+  }
+
+  private static class HalfPricePromotion extends Promotion {
+    String type = "指定菜品半价";
+    String[] items = getHalfPriceIds();
+
+    @Override
+    PromoDetails getPromoDetails(double fullCost, CostDetails[] costDetailsArray) {
+      HashSet<String> promoSet = new HashSet<>(Arrays.asList(items));
+      ArrayList<String> promoNames = new ArrayList<>();
+      double discount = 0;
+
+      for (CostDetails costDetails : costDetailsArray) {
+        if (promoSet.contains(costDetails.id)) {
+          promoNames.add(costDetails.name);
+          discount += costDetails.price * costDetails.count / 2;
+        }
+      }
+
+      return new PromoDetails(
+              this.type,
+              fullCost - discount,
+              MessageFormat.format("指定菜品半价({0})，省{1}元", String.join("，", promoNames), discount));
+    }
+  }
+  
 
   /**
    * 获取每个菜品依次的编号
@@ -101,84 +185,10 @@ public class App {
     return new String[]{"ITEM0001", "ITEM0022"};
   }
 
-  private static HashMap[] getIdMaps() {
-    String[] ids = getItemIds();
-    String[] names = getItemNames();
-    double[] prices = getItemPrices();
-    HashMap<String, String> idNameMap = new HashMap<>();
-    HashMap<String, Double> idPriceMap = new HashMap<>();
-    for (int i = 0, len = ids.length; i < len; i++) {
-      idNameMap.put(ids[i], names[i]);
-      idPriceMap.put(ids[i], prices[i]);
-    }
-    return new HashMap[]{idNameMap, idPriceMap};
-  }
-
-  private abstract static class Promotion {
-    String type;
-
-    abstract PromotionDetails getPromotionDetails(double fullCost, CostDetails[] costDetailsList);
-  }
-
-
-  private static class SimplePromotion extends Promotion {
-    String type = "满30减6元";
-
-    @Override
-    PromotionDetails getPromotionDetails(double fullCost, CostDetails[] costDetailsList) {
-      return new PromotionDetails(this.type, fullCost >= 30 ? fullCost - 6 : fullCost, "满30减6元，省6元");
-    }
-  }
-
-  private static class HalfPricePromotion extends Promotion {
-    String type = "指定菜品半价";
-    String[] items = getHalfPriceIds();
-
-    @Override
-    PromotionDetails getPromotionDetails(double fullCost, CostDetails[] costDetailsList) {
-      HashSet<String> promoSet = new HashSet<>(Arrays.asList(items));
-      ArrayList<String> promoNames = new ArrayList<>();
-      double discount = 0;
-      for (CostDetails costDetails : costDetailsList) {
-        if (promoSet.contains(costDetails.id)) {
-          promoNames.add(costDetails.name);
-          discount += costDetails.price * costDetails.count / 2;
-        }
-      }
-      return new PromotionDetails(
-              this.type,
-              fullCost - discount,
-              MessageFormat.format("指定菜品半价({0})，省{1}元", String.join("，", promoNames), discount));
-    }
-  }
-
+  /**
+   * 获取促销方式
+   */
   private static Promotion[] getPromotions() {
     return new Promotion[]{new SimplePromotion(), new HalfPricePromotion()};
-  }
-
-  public static class PromotionDetails {
-    String type;
-    double cost;
-    String info;
-
-    PromotionDetails(String type, double cost, String info) {
-      this.type = type;
-      this.cost = cost;
-      this.info = info;
-    }
-  }
-
-  public static class CostDetails {
-    String id;
-    String name;
-    double price;
-    int count;
-
-    public CostDetails(String id, String count) {
-      this.id = id;
-      this.name = idNameMap.get(id);
-      this.price = idPriceMap.get(id);
-      this.count = Integer.parseInt(count);
-    }
   }
 }
