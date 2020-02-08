@@ -1,8 +1,23 @@
-## Homework and Shares for [TW-Recruit-Camp](https://github.com/thoughtworks-recruit-camp) *Course-III.Java-Basics*
-### Homework 
-*Homework are mostly presented in different branches to adapt the online judging system*
-#### Section I
-* **I.7 Array Practice**->[`Branch: I.7-Array-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/I.7-Array-Practice)
-* **I.8 Takeaway Java Version**->[`Branch: I.8-Takeaway`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/I.8-Takeaway)
-#### Section II
-* **II.1 Object-Oriented Practice**->[`Branch: II.1-OO-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.1-OO-Practice)
+## 家庭作业：
+
+1. 编写以下要求的类，按照要求完成继承关系。
+  * 动物类: 有年龄、体重属性,有吃东西和睡觉方法。
+  * 鸟类: 继承动物类，同时有飞行速度属性和飞行方法。
+  * 老鹰类: 继承鸟类，同时具有捕食对象属性和捕食方法。
+
+2. 为动物类、鸟类、老鹰类三个类都添加对应的无参构造方法和全参构造方法
+
+3. 运用之前写的类在Application用代码描述一下场景：
+一只4岁的老鹰，体重5Kg，这只老鹰生活在兔子窝所以它只捕食兔子。某天它先翱翔天空，在饥肠辘辘之际捕食了一只兔子，然后饱餐一顿，心满意足之后就睡觉了。
+
+
+**使用简介**  
+1. 如何导入gradle项目(现在不要求掌握什么是gradle)
+- https://www.youtube.com/watch?v=0s7YYjQEsfU
+- https://www.jetbrains.com/help/idea/gradle.html
+
+2.运行所有测试  
+```
+./gradlew test
+```
+3. 运行单个测试可以直接点击对应测试右边的绿色三角形
