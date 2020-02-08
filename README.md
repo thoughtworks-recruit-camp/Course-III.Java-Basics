@@ -6,3 +6,4 @@
 * **I.8 Takeaway Java Version**->[`Branch: I.8-Takeaway`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/I.8-Takeaway)
 #### Section II
 * **II.1 Object-Oriented Practice**->[`Branch: II.1-OO-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.1-OO-Practice)
+* **II.2 Object Inheritance Practice**->[`Branch: II.2-Object-Inheritance`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.2-Object-Inheritance)
