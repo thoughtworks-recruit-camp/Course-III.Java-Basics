@@ -1,12 +1,14 @@
-## Homework and Shares for [TW-Recruit-Camp](https://github.com/thoughtworks-recruit-camp) *Course-III.Java-Basics*
-### Homework 
-*Homework are mostly presented in different branches to adapt the online judging system*
-#### Section I
-* **I.7 Array Practice**->[`Branch: I.7-Array-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/I.7-Array-Practice)
-* **I.8 Takeaway Java Version**->[`Branch: I.8-Takeaway`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/I.8-Takeaway)
-#### Section II
-* **II.1 Object-Oriented Practice**->[`Branch: II.1-OO-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.1-OO-Practice)
-* **II.2 Object Inheritance Practice**->[`Branch: II.2-Object-Inheritance`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.2-Object-Inheritance)
-* **II.3-Object Polymorphism Practice**->[`Branch: II.3-Object-Polymorphism`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.3-Object-Polymorphism)
-* **II.4-1-Object Abstract Practice**->[`Branch: II.4-1-Object-Abstract`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.4-1-Object-Abstract)
-* **II.4-2-Object Interface Practice**->[`Branch: II.4-2-Object-Interface`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.4-2-Object-Interface)
+**需求描述**
+* 一辆小车，可以左转和右转，面对不同的方向，左转右转之后的方向也不一样。
+* 重构给定的代码，运用接口的方式实现，去掉switch case语句实现同样的功能。
+
+**使用简介**  
+1. 如何导入gradle项目(现在不要求掌握什么是gradle)
+- https://www.youtube.com/watch?v=0s7YYjQEsfU
+- https://www.jetbrains.com/help/idea/gradle.html
+
+2.运行所有测试  
+```
+./gradlew test
+```
+3. 运行单个测试可以直接点击对应测试右边的绿色三角形
