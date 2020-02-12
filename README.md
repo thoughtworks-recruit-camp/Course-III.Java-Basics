@@ -12,3 +12,4 @@
 * **II.4-2 Object Interface Practice**->[`Branch: II.4-2-Object-Interface`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.4-2-Object-Interface)
 * **II.4-3 Mars Rover Practice**->[`Branch: II.4-3-Marsrover-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.4-3-Marsrover-Practice)
 * **II.5-3 Modifier Practice**->[`Branch: II.5-3-Modifier-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.5-3-Modifier-Practice)
+* **II.6-3 Enumeration Practice**->[`Branch: II.6-3-Enum-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.6-3-Enum-Practice)
