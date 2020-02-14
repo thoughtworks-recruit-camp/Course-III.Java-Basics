@@ -13,3 +13,4 @@
 * **II.4-3 Mars Rover Practice**->[`Branch: II.4-3-Marsrover-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.4-3-Marsrover-Practice)
 * **II.5-3 Modifier Practice**->[`Branch: II.5-3-Modifier-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.5-3-Modifier-Practice)
 * **II.6-3 Enumeration Practice**->[`Branch: II.6-3-Enum-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.6-3-Enum-Practice)
+* **II.7 Card Machine Practice**->[`Branch: II.7-Card-Machine`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.7-Card-Machine)
