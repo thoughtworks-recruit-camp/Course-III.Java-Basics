@@ -14,3 +14,4 @@
 * **II.5-3 Modifier Practice**->[`Branch: II.5-3-Modifier-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.5-3-Modifier-Practice)
 * **II.6-3 Enumeration Practice**->[`Branch: II.6-3-Enum-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.6-3-Enum-Practice)
 * **II.7 Card Machine Practice**->[`Branch: II.7-Card-Machine`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.7-Card-Machine)
+* **II.8 Students Management Practice**->[`Branch: II.8-Student-Manage`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.8-Student-Manage)
