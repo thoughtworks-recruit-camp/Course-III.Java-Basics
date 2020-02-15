@@ -24,7 +24,7 @@ public class Student {
         return MessageFormat.format("Name: {0}  Gender: {1}", this.name, this.gender);
     }
 
-    public static Student[] filterByGender(Student[] students, Gender gender) {
+    public static Student[] filterByGender(ArrayList<Student> students, Gender gender) {
         ArrayList<Student> resultList = new ArrayList<>();
         for (Student student : students) {
             if (student.getGender() == gender) {

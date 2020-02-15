@@ -1,13 +1,17 @@
 import person.Gender;
 import person.Student;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Application {
     public static void main(String[] args) {
-        Student[] students = new Student[]{
+        ArrayList<Student> students = new ArrayList<>(Arrays.asList(
                 new Student("Linda", Gender.Female),
                 new Student("Bob", Gender.Male),
                 new Student("Solider", Gender.Male),
-                new Student("Cindy", Gender.Female)};
+                new Student("Cindy", Gender.Female)
+        ));
         System.out.println("\nCreated students:");
         for (Student student : students) {
             System.out.printf("\t %s\n", student.getInfo());
