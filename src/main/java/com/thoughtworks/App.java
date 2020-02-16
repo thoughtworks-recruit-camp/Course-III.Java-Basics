@@ -11,7 +11,8 @@ public class App {
                 new Student("王五", "001", "2019.02.09"),
         });
         System.out.println(teacherA);
-        System.out.println(teacherA.studentsIntros());
+        teacherA.printStudentsIntros();
+
         teacherA.printDuplicateStudents();
     }
 }

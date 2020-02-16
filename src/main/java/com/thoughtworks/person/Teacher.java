@@ -43,31 +43,31 @@ public class Teacher {
         return duplicateMap;
     }
 
-    public void printDuplicateStudents() {
-        for (HashMap.Entry<String, ArrayList<Student>> dupStudentsEntry : getDuplicateStudents().entrySet()) {
-            String id = dupStudentsEntry.getKey();
-            ArrayList<Student> duplicateStudents = dupStudentsEntry.getValue();
-
-            System.out.printf("使用学号【%s】的学生存在重复（共%d名），为：\n", id, duplicateStudents.size());
-            for (Student student : duplicateStudents) {
-                System.out.print("\t");
-                System.out.printf("姓名：%s  入学时间：%s\n", student.getName(), outputFormatter.format(student.getEntranceDate()));
-            }
-        }
-    }
-
     @Override
     public String toString() {
         return String.format("我是%s老师，我管理%d名学生",
                 this.name, this.students.size());
     }
 
-    public String studentsIntros() {
-        StringBuilder intros = new StringBuilder("有请学生们做自我介绍：\n");
+    public void printStudentsIntros() {
+        System.out.println("有请学生们做自我介绍：");
+        StringBuilder intros = new StringBuilder();
         for (Student student : students) {
-            intros.append(student.toString());
-            intros.append("\n");
+            intros.append(String.format("-\t%s\n", student.toString()));
         }
-        return intros.toString();
+        System.out.println(intros);
+    }
+
+    public void printDuplicateStudents() {
+        System.out.printf("%s老师的学生中\n",name);
+        for (HashMap.Entry<String, ArrayList<Student>> dupStudentsEntry : getDuplicateStudents().entrySet()) {
+            String id = dupStudentsEntry.getKey();
+            ArrayList<Student> duplicateStudents = dupStudentsEntry.getValue();
+
+            System.out.printf("#\t使用学号【%s】的学生存在重复（共%d名），为：\n",id, duplicateStudents.size());
+            for (Student student : duplicateStudents) {
+                System.out.printf("-\t姓名：%s  入学时间：%s\n", student.getName(), outputFormatter.format(student.getEntranceDate()));
+            }
+        }
     }
 }
