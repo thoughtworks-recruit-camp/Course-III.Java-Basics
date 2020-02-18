@@ -16,3 +16,5 @@
 * **II.7 Card Machine Practice**->[`Branch: II.7-Card-Machine`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.7-Card-Machine)
 * **II.8 Students Management Practice**->[`Branch: II.8-Student-Manage`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.8-Student-Manage)
 * **II.9 Takeaway Object-Oriented Version**->[`Branch: II.9-Takeaway-OO`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.9-Takeaway-OO)
+#### Section III
+* **III.1 Collection Practice**->[`Branch: III.1-Collection-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/III.1-Collection-Practice)
