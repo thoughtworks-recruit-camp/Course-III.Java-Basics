@@ -18,3 +18,4 @@
 * **II.9 Takeaway Object-Oriented Version**->[`Branch: II.9-Takeaway-OO`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/II.9-Takeaway-OO)
 #### Section III
 * **III.1 Collection Practice**->[`Branch: III.1-Collection-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/III.1-Collection-Practice)
+* **III.2 Map Practice**->[`Branch: III.2-Map-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/III.2-Map-Practice)
