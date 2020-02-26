@@ -21,7 +21,7 @@ import static com.thoughtworks.io.util.TestUtil.createFolder;
 class FileUtilTest {
 
     @Test
-    void should_copy_correctly_when_from_and_to_also_empty() throws IOException {
+    void should_copy_correctly_given_from_and_to_both_empty() throws IOException {
         File from = FROM_PATH.toFile();
         File to = TO_PATH.toFile();
         FileUtil.copyDirectory(from, to);
@@ -30,7 +30,7 @@ class FileUtilTest {
     }
 
     @Test
-    void should_copy_correctly_when_from_includes_file() throws IOException {
+    void should_copy_correctly_given_from_includes_file() throws IOException {
         File from = FROM_PATH.toFile();
         File to = TO_PATH.toFile();
         createFile(FROM_PATH, "1.txt", "123");
@@ -41,7 +41,7 @@ class FileUtilTest {
     }
 
     @Test
-    void should_copy_correctly_when_from_includes_file_and_empty_folder() throws IOException {
+    void should_copy_correctly_given_from_includes_file_and_empty_folder() throws IOException {
         File from = FROM_PATH.toFile();
         File to = TO_PATH.toFile();
         createFile(FROM_PATH, "1.txt", "123");
@@ -53,7 +53,7 @@ class FileUtilTest {
     }
 
     @Test
-    void should_copy_correctly_when_from_includes_file_and_empty_folder_which_includes_file() throws IOException {
+    void should_copy_correctly_given_from_includes_file_and_empty_folder_which_includes_file() throws IOException {
         File from = FROM_PATH.toFile();
         File to = TO_PATH.toFile();
         commonCreate();
@@ -64,7 +64,7 @@ class FileUtilTest {
     }
 
     @Test
-    void should_copy_correctly_when_from_includes_multiple_file() throws IOException {
+    void should_copy_correctly_given_from_includes_multiple_file() throws IOException {
         File from = FROM_PATH.toFile();
         File to = TO_PATH.toFile();
         commonCreate();
@@ -74,6 +74,18 @@ class FileUtilTest {
         createFile(musicPath, "5.txt", "888");
         createFile(musicPath, "6.txt", "999");
 
+
+        FileUtil.copyDirectory(from, to);
+
+        assertDirsEqual(from, to);
+    }
+
+    @Test
+    void should_copy_correctly_given_from_and_to_both_includes_file() throws IOException {
+        File from = FROM_PATH.toFile();
+        File to = TO_PATH.toFile();
+        commonCreate();
+        createFile(TO_PATH, "8.txt", "888");
 
         FileUtil.copyDirectory(from, to);
 
