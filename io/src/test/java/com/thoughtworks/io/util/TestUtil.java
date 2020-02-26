@@ -80,7 +80,7 @@ public class TestUtil {
                 }
             }
         }
-        file.deleteOnExit();
+        file.delete();
     }
 
 

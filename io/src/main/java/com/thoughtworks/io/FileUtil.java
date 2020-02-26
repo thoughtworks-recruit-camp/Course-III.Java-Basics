@@ -1,6 +1,7 @@
 package com.thoughtworks.io;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.MessageFormat;
@@ -30,10 +31,12 @@ public class FileUtil {
     }
 
     public static void copyDirectoryUniversal(File from, File to) {
-        try {
-            Files.walkFileTree(from.toPath(), new TreeCopyVisitor(from.toPath(), to.toPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (to.exists())
+            try {
+                Files.walkFileTree(to.toPath(), new DirDeleteVisitor(to.toPath()));
+                Files.walkFileTree(from.toPath(), new TreeCopyVisitor(from.toPath(), to.toPath()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 }
