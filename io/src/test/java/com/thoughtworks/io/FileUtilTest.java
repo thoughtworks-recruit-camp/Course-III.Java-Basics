@@ -25,7 +25,6 @@ class FileUtilTest {
         File from = FROM_PATH.toFile();
         File to = TO_PATH.toFile();
         FileUtil.copyDirectory(from, to);
-
         assertDirsEqual(from, to);
     }
 
