@@ -15,8 +15,8 @@ public class FileUtil {
             runCommand(Commands.WinClean, from, to);
             runCommand(Commands.WinCopy, from, to);
         } else if (osName.contains("Linux") || osName.contains("Mac")) {  // POSIX OSs
-            runCommand(Commands.PosixCopy, from, to);
             runCommand(Commands.PosixClean, from, to);
+            runCommand(Commands.PosixCopy, from, to);
         } else {  // Java Implementation
             copyDirectoryUniversal(from, to);
         }
