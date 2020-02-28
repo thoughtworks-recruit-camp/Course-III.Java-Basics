@@ -9,7 +9,7 @@ public class FileUtil {
     public static void copyDirectory(File from, File to) {
         String osName = System.getProperty("os.name");
         String osVersion = System.getProperty("os.version");
-        if (osName.contains("Windows") && Double.parseDouble(osVersion) >= 15.2) {  // Windows 2003 & above OSs
+        if (osName.contains("Windows") && Double.parseDouble(osVersion) >= 5.2) {  // Windows 2003 & above OSs
             runCommand(Commands.WinModern, from, to);
         } else if (osName.contains("Windows")) {  // Legacy Windows OSs
             runCommand(Commands.WinClean, from, to);
@@ -34,7 +34,7 @@ public class FileUtil {
     public static void copyDirectoryUniversal(File from, File to) {
         if (to.exists())
             try {
-                Files.walkFileTree(to.toPath(), new DirDeleteVisitor(to.toPath()));
+                Files.walkFileTree(to.toPath(), new DirDeleteVisitor());
                 Files.walkFileTree(from.toPath(), new TreeCopyVisitor(from.toPath(), to.toPath()));
             } catch (IOException e) {
                 e.printStackTrace();
