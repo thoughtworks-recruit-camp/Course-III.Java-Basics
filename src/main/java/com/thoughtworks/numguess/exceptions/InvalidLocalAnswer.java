@@ -7,6 +7,6 @@ public class InvalidLocalAnswer extends Exception {
 
     @Override
     public String getMessage() {
-        return String.format("Local answer is invalid, caused by:\n-> %s", getCause().getMessage());
+        return String.format("Local answer is invalid, caused by -> %s", getCause().getMessage());
     }
 }

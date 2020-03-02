@@ -9,10 +9,10 @@ class Match {
 
     Match(Guess guess, Answer answer) {
         this.guess = guess;
-        int fullMatch = 0;
-        int digitMatch = 0;
         List<Integer> guessDigits = guess.getDigits();
         List<Integer> answerDigits = answer.getDigits();
+        int fullMatch = 0;
+        int digitMatch = 0;
         for (int i = 0, len = guessDigits.size(); i < len; i++) {
             int iAnswer = answerDigits.indexOf(guessDigits.get(i));  // guess digit's index in answer
             if (iAnswer == i) {

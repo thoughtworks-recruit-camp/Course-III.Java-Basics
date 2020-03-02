@@ -7,6 +7,6 @@ public class InvalidInput extends Exception {
 
     @Override
     public String getMessage() {
-        return String.format("Wrong input, caused by ->%s", getCause().getMessage());
+        return String.format("Wrong input, caused by -> %s", getCause().getMessage());
     }
 }

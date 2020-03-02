@@ -92,7 +92,8 @@ public class Game {
             return;
         }
         try {
-            Match match = new Match(new Guess(input, answerLen), answer);
+            Guess guess = new Guess(input, answerLen);
+            Match match = new Match(guess, answer);
             resultsHistory.add(match);
             checkMatch(match);
         } catch (InvalidFormat e) {
@@ -119,5 +120,4 @@ public class Game {
         checkStatus(Status.Ended, "Get Result");
         return result;
     }
-
 }
