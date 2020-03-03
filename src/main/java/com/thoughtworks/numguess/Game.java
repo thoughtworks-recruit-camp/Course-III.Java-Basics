@@ -7,8 +7,10 @@ import com.thoughtworks.numguess.enums.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Game {
+    private final UUID uuid;
     private final int answerLen;
     private final File answerFile;
     private final int triesMax;
@@ -20,6 +22,7 @@ public class Game {
     private ArrayList<Match> resultsHistory = new ArrayList<>();
 
     public Game(Config config) {
+        uuid = UUID.randomUUID();
         this.answerLen = config.getAnswerLen();
         this.answerFile = config.getAnswerFile();
         triesLeft = this.triesMax = config.getTriesMax();
@@ -27,6 +30,10 @@ public class Game {
 
     public Game() {
         this(ConfigLoader.loadDefaultConfig());
+    }
+
+    public UUID getUuid() {
+        return uuid;
     }
 
     int getTriesMax() {
@@ -86,11 +93,7 @@ public class Game {
 
     void handleInput(String input) throws InvalidInput {
         checkStatus(Status.Ongoing, "Handle Input");
-        if (input.equals("QUIT")) {
-            status = Status.Ended;
-            result = Result.Quit;
-            return;
-        }
+
         try {
             Guess guess = new Guess(input, answerLen);
             Match match = new Match(guess, answer);
@@ -119,5 +122,10 @@ public class Game {
     Result getResult() {
         checkStatus(Status.Ended, "Get Result");
         return result;
+    }
+
+    void quit() {
+        status = Status.Ended;
+        result = Result.Quit;
     }
 }

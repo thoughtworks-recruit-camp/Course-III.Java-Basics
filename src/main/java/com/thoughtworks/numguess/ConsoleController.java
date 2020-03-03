@@ -1,5 +1,6 @@
 package com.thoughtworks.numguess;
 
+import com.thoughtworks.numguess.enums.Result;
 import com.thoughtworks.numguess.exceptions.InvalidInput;
 import com.thoughtworks.numguess.exceptions.InvalidLocalAnswer;
 import com.thoughtworks.numguess.exceptions.InvalidStatus;
@@ -63,13 +64,18 @@ public class ConsoleController {
     private static void playGame(Game game) {
         String input = in.next();
         String lastInvalidInput = "";
-        try {
-            game.handleInput(input);
-        } catch (InvalidInput e) {
-            lastInvalidInput = String.format("%s %s\n", input, e.getMessage());
-        } finally {
-            printResultsHistory(game);
-            out.print(lastInvalidInput);
+        if (input.equals("QUIT")) {
+            game.quit();
+        } else {
+            try {
+                game.handleInput(input);
+
+            } catch (InvalidInput e) {
+                lastInvalidInput = String.format("%s %s\n", input, e.getMessage());
+            } finally {
+                printResultsHistory(game);
+                out.print(lastInvalidInput);
+            }
         }
     }
 
