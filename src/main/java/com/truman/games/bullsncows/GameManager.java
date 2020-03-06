@@ -5,7 +5,6 @@ import com.truman.games.bullsncows.models.StatusDetails;
 
 import java.io.File;
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -67,12 +66,11 @@ public class GameManager {
     }
 
     private void gc() {
-        for (Map.Entry<String, Game> gameEntry : db.entrySet()) {
-            Game game = gameEntry.getValue();
+        db.forEach((key, game) -> {
             if (calcRemainingLife(game) == 0) {
-                db.remove(gameEntry.getKey());
+                db.remove(key);
             }
-        }
+        });
     }
 
     private long findMinWaitingMs() {

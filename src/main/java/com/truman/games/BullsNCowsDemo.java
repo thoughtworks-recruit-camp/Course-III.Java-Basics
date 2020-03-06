@@ -1,4 +1,4 @@
-package com.truman.games.bullsncows;
+package com.truman.games;
 
 import com.truman.games.bullsncows.controllers.ConsoleController;
 import com.truman.games.bullsncows.exceptions.GamesCountExceeded;
@@ -14,6 +14,7 @@ public final class BullsNCowsDemo {
         } catch (InvalidStatus | GamesCountExceeded e) {
             ConsoleController.showErrorAndExit(e);
         }
+        
         System.out.println("\n*** Demo for random answer (due to wrong local answer path) ***\n");
         try {
             ConsoleController.playNewGame();
