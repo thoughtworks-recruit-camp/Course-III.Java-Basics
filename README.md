@@ -24,6 +24,9 @@
 * **III.5 Exception Practice**->[`Branch: III.5-Exception-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/III.5-Exception-Practice)
 * **III.6 Annotation Practice**->[`Branch: III.6-Annotation-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/III.6-Annotation-Practice)
 * **III.7 Bulls and Cows**->[`Branch: III.7-Bulls-n-Cows`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/III.7-Bulls-n-Cows)
-#### Section III
+#### Section IV
 * **IV.1 Lambda Practice**->[`Branch: IV.1-Lambda-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/IV.1-Lambda-Practice)
 * **IV.2 Stream Practice**->[`Branch: IV.2-Stream-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/IV.2-Stream-Practice)
+* **IV.4 Person Info / Java8 Practice**->[`Branch: IV.4-Person-Info-Java8`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/IV.4-Person-Info-Java8)
+#### Shares
+* **1. SimplePractice Feb 28th, 2020**->[`Branch: Share-Simple-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/Share-Simple-Practice)
