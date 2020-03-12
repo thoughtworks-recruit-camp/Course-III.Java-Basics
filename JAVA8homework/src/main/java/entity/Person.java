@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class Person {
     private static final String FULL_INFO_TEMPLATE = "Master Number: %s\nAddress:\n%s\nTels:\n%s\nEmails:\n%s\n";
+
     private String masterNumber;
     private List<Telephone> telephones;
     private Address address;
@@ -25,16 +26,11 @@ public class Person {
 
     public String getFullInfo() {
         String telStrings = telephones.stream()
-                .map(telephone -> String.format("\t%s %s", telephone.getCountryCode(), telephone.getTelephoneNumber()))
+                .map(telephone -> String.format("\t%s", telephone.getFullNumber()))
                 .collect(Collectors.joining("\n"));
         String emailStrings = emails.stream()
                 .map(email -> String.format("\t%s", email.getEmailAddress()))
                 .collect(Collectors.joining("\n"));
         return String.format(FULL_INFO_TEMPLATE, masterNumber, address.getFullAddress(), telStrings, emailStrings);
     }
-//    // Deprecated
-//    @Override
-//    public boolean equals(Object obj) {
-//        return (obj instanceof Person && ((Person) obj).masterNumber.equals(masterNumber));
-//    }
 }
