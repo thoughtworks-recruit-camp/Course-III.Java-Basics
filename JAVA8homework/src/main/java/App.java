@@ -3,6 +3,7 @@ import entity.Person;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class App {
@@ -14,9 +15,10 @@ public class App {
     }
 
     private static void printPersonsInfo(List<MasterNumber> masterNumbers) {
-        System.out.printf("\nGetting person info of master numbers %s\n\n", masterNumbers);
+        System.out.printf("\nGetting person info of master numbers [%s]\n\n",
+                masterNumbers.stream().map(MasterNumber::getNumber).collect(Collectors.joining(",")));
         Stream<Person> personStream = personService.getPersonByMasterNumbers(masterNumbers);
-        long count = personStream.peek(System.out::println).filter(x -> true).count();  // filter() is a countermeasure for Stream optimization in JDK9+
+        long count = personStream.map(Person::getFullInfo).peek(System.out::println).filter(x -> true).count();  // filter() is a countermeasure for Stream optimization in JDK9+
         if (count == 0) {
             System.out.println("NO person info found!");
         }

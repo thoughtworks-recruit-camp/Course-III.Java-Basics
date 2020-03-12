@@ -3,6 +3,8 @@ import entity.Email;
 import entity.MasterNumber;
 import entity.Person;
 import entity.Telephone;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,21 +12,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Data
+@AllArgsConstructor
 public class PersonSet {
     private List<MasterNumber> masterNumbers;
-    private List<Address> addresses;
     private List<Telephone> telephones;
+    private List<Address> addresses;
     private List<Email> emails;
-
-    public PersonSet(List<MasterNumber> masterNumbers,
-                     List<Telephone> telephones,
-                     List<Address> addresses,
-                     List<Email> emails) {
-        this.masterNumbers = masterNumbers;
-        this.addresses = addresses;
-        this.telephones = telephones;
-        this.emails = emails;
-    }
 
     public Stream<Person> groupToPeople() {
         Map<String, List<Telephone>> telephonesMap = telephones.stream().collect(Collectors.groupingBy(Telephone::getMasterNumber));
@@ -35,40 +29,11 @@ public class PersonSet {
                 telephonesMap.getOrDefault(mn.getNumber(), new LinkedList<>()),
                 addressesMap.getOrDefault(mn.getNumber(), null),
                 emailsMap.getOrDefault(mn.getNumber(), new LinkedList<>())));
-//        //Deprecated//
-//        System.out.println(telephonesMap);
-//        return masterNumbers.stream().map(masterNumber -> new Person(
-//                masterNumber.getNumber(),
-//                telephones.stream().filter(telephone -> telephone.getMasterNumber().equals(masterNumber.getNumber())).collect(Collectors.toList()),
-//                addresses.stream().filter(address -> address.getMasterNumber().equals(masterNumber.getNumber())).findAny().orElse(null),
-//                emails.stream().filter(email -> email.getMasterNumber().equals(masterNumber.getNumber())).collect(Collectors.toList())));
-    }
-
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
-
-    public List<Telephone> getTelephones() {
-        return telephones;
-    }
-
-    public void setTelephones(List<Telephone> telephones) {
-        this.telephones = telephones;
-    }
-
-    public List<Email> getEmails() {
-        return emails;
-    }
-
-    public void setEmails(List<Email> emails) {
-        this.emails = emails;
-    }
-
-    public void setMasterNumbers(List<MasterNumber> masterNumbers) {
-        this.masterNumbers = masterNumbers;
+//      //Deprecated//
+//      return masterNumbers.stream().map(masterNumber -> new Person(
+//              masterNumber.getNumber(),
+//              telephones.stream().filter(telephone -> telephone.getMasterNumber().equals(masterNumber.getNumber())).collect(Collectors.toList()),
+//              addresses.stream().filter(address -> address.getMasterNumber().equals(masterNumber.getNumber())).findAny().orElse(null),
+//              emails.stream().filter(email -> email.getMasterNumber().equals(masterNumber.getNumber())).collect(Collectors.toList())));
     }
 }
