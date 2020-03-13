@@ -5,6 +5,8 @@ import entity.Telephone;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PersonSetDataProvider {
     public static PersonSet providePersonSetWithNumber1() {
@@ -43,6 +45,35 @@ public class PersonSetDataProvider {
                         new Email("2", "222@gmail.com"),
                         new Email("2", "2222@gmail.com")
                 );
+        return new PersonSet(masterNumbers, telephones, addresses, emails);
+    }
+
+    public static PersonSet provideRandomPersonData(int n) {
+        List<MasterNumber> masterNumbers = IntStream.range(0, n)
+                .mapToObj(String::valueOf)
+                .map(MasterNumber::new)
+                .collect(Collectors.toList());
+        List<Address> addresses = IntStream.range(0, n)
+                .mapToObj(String::valueOf)
+                .map(mn -> new Address(
+                mn,
+                String.format("Country %s", mn),
+                String.format("City %s", mn),
+                String.format("Street %s", mn)))
+                .collect(Collectors.toList());
+        List<Telephone> telephones = IntStream.range(0, n)
+                .mapToObj(String::valueOf)
+                .map(mn -> new Telephone(
+                mn,
+                String.format("+%s", mn),
+                mn))
+                .collect(Collectors.toList());
+        List<Email> emails = IntStream.range(0, n)
+                .mapToObj(String::valueOf)
+                .map(mn -> new Email(
+                mn,
+                String.format("%s@gmail.com", mn)))
+                .collect(Collectors.toList());
         return new PersonSet(masterNumbers, telephones, addresses, emails);
     }
 }

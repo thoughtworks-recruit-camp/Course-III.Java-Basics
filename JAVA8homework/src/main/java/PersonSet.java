@@ -9,6 +9,7 @@ import lombok.Data;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,13 +23,34 @@ public class PersonSet {
     private List<Email> emails;
 
     public Stream<Person> groupToPeople() {
-        Map<String, List<Telephone>> telephonesMap = telephones.stream().collect(Collectors.groupingBy(Telephone::getMasterNumber));
-        Map<String, Address> addressesMap = addresses.stream().collect(Collectors.toMap(Address::getMasterNumber, Function.identity(), (a1, a2) -> a1));
-        Map<String, List<Email>> emailsMap = emails.stream().collect(Collectors.groupingBy(Email::getMasterNumber));
-        return masterNumbers.stream().map(mn -> new Person(
-                mn.getNumber(),
-                telephonesMap.getOrDefault(mn.getNumber(), new LinkedList<>()),
-                addressesMap.getOrDefault(mn.getNumber(), null),
-                emailsMap.getOrDefault(mn.getNumber(), new LinkedList<>())));
+        Map<String, List<Telephone>> telephonesMap = telephones.stream()
+                .collect(Collectors.groupingBy(Telephone::getMasterNumber));
+        Map<String, Address> addressesMap = addresses.stream()
+                .collect(Collectors.toMap(Address::getMasterNumber, Function.identity(), (a1, a2) -> a1));
+        Map<String, List<Email>> emailsMap = emails.stream()
+                .collect(Collectors.groupingBy(Email::getMasterNumber));
+        return masterNumbers.stream()
+                .map(MasterNumber::getNumber)
+                .map(masterNumber -> new Person(
+                        masterNumber,
+                        telephonesMap.getOrDefault(masterNumber, new LinkedList<>()),
+                        addressesMap.getOrDefault(masterNumber, null),
+                        emailsMap.getOrDefault(masterNumber, new LinkedList<>())));
+    }
+
+    public Stream<Person> groupToPeopleAlt() {
+        return masterNumbers.stream()
+                .map(MasterNumber::getNumber)
+                .map(masterNumber -> new Person(
+                        masterNumber,
+                        telephones.stream()
+                                .filter(telephone -> Objects.equals(telephone.getMasterNumber(), masterNumber))
+                                .collect(Collectors.toList()),
+                        addresses.stream()
+                                .filter(address -> Objects.equals(address.getMasterNumber(), masterNumber))
+                                .findAny().orElse(null),
+                        emails.stream()
+                                .filter(email -> Objects.equals(email.getMasterNumber(), masterNumber))
+                                .collect(Collectors.toList())));
     }
 }
