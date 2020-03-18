@@ -28,5 +28,7 @@
 * **IV.1 Lambda Practice**->[`Branch: IV.1-Lambda-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/IV.1-Lambda-Practice)
 * **IV.2 Stream Practice**->[`Branch: IV.2-Stream-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/IV.2-Stream-Practice)
 * **IV.4 Person Info / Java8 Practice**->[`Branch: IV.4-Person-Info-Java8`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/IV.4-Person-Info-Java8)
+#### DB Section II
+* **DB-II.1 JDBC Practice**->[`Branch: DB-II.1-JDBC`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/DB-II.1-JDBC)
 #### Shares
 * **1. SimplePractice Feb 28th, 2020**->[`Branch: Share-Simple-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/Share-Simple-Practice)
