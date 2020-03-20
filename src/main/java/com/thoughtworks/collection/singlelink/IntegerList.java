@@ -1,9 +1,11 @@
 package com.thoughtworks.collection.singlelink;
 
+import java.util.Optional;
+
 public class IntegerList implements SingleLink<Integer> {
     private SingleLinkNode<Integer> headerNode;
     private SingleLinkNode<Integer> tailNode;
-    private int cacheIndex =-1;
+    private int cacheIndex = -1;
     private SingleLinkNode<Integer> cacheNode;
     private int size = 0;
 
@@ -12,12 +14,12 @@ public class IntegerList implements SingleLink<Integer> {
 
     @Override
     public Integer getHeaderData() {
-        return headerNode.getData();
+        return Optional.ofNullable(headerNode).map(SingleLinkNode::getData).orElse(null);
     }
 
     @Override
     public Integer getTailData() {
-        return tailNode.getData();
+        return Optional.ofNullable(tailNode).map(SingleLinkNode::getData).orElse(null);
     }
 
     @Override
@@ -39,27 +41,24 @@ public class IntegerList implements SingleLink<Integer> {
         if (cacheIndex == index) {
             cacheIndex = -1;
             cacheNode = null;
-        } else if (cacheIndex > index) {
+        }
+        if (cacheIndex > index) {
             cacheIndex--;
         }
-
-        if (index == 0) {
-            deleteFirst();
-        }
         if (index == size - 1) {
-            deleteLast();
+            return deleteLast();
         }
-        SingleLinkNode<Integer> prevNode = getNode(index);
-        prevNode.setNextNode(prevNode.getNextNode().getNextNode());
-        size--;
-        return true;
-
+        if (index == 0) {
+            return deleteFirst();
+        }
+        return deleteByIndex(index);
     }
 
     @Override
     public boolean deleteFirst() {
         if (!isEmpty()) {
             headerNode = headerNode.getNextNode();
+            size--;
             return true;
         }
         return false;
@@ -68,10 +67,10 @@ public class IntegerList implements SingleLink<Integer> {
     @Override
     public boolean deleteLast() {
         if (!isEmpty()) {
-            if (size <= 1) {
+            if (size == 1) {
                 headerNode = tailNode = null;
             } else {
-                SingleLinkNode<Integer> newTailNode = getNode(size - 1);
+                SingleLinkNode<Integer> newTailNode = getNode(size - 2);
                 newTailNode.setNextNode(null);
                 tailNode = newTailNode;
             }
@@ -81,11 +80,23 @@ public class IntegerList implements SingleLink<Integer> {
         return false;
     }
 
+    private boolean deleteByIndex(int index) {
+        SingleLinkNode<Integer> prevNode = getNode(index - 1);
+        prevNode.setNextNode(prevNode.getNextNode().getNextNode());
+        size--;
+        return true;
+    }
+
     @Override
     public void addHeadPointer(Integer item) {
         IntegerNode newHeaderNode = new IntegerNode(item);
-        newHeaderNode.setNextNode(headerNode);
-        headerNode = newHeaderNode;
+        if (isEmpty()) {
+            headerNode = tailNode = newHeaderNode;
+        } else {
+            newHeaderNode.setNextNode(headerNode);
+            headerNode = newHeaderNode;
+        }
+        size++;
 
         if (cacheIndex != -1) {
             cacheIndex++;
@@ -107,7 +118,7 @@ public class IntegerList implements SingleLink<Integer> {
     private SingleLinkNode<Integer> getNode(int index) {
         SingleLinkNode<Integer> startNode;
         int range;
-        if (index - cacheIndex < index) {
+        if (cacheIndex > -1 && cacheIndex <= index) {
             startNode = cacheNode;
             range = index - cacheIndex;
         } else {
