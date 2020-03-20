@@ -26,8 +26,7 @@ public class Add {
 
     public int getSumTripleAndAddTwo(List<Integer> arrayList) {
         return arrayList.stream()
-                .map(x -> x * 3 + 2)
-                .mapToInt(Integer::intValue)
+                .mapToInt(x -> x * 3 + 2)
                 .sum();
     }
 
@@ -40,8 +39,7 @@ public class Add {
     public int getSumOfProcessedOdds(List<Integer> arrayList) {
         return arrayList.stream()
                 .filter(x -> x % 2 != 0)
-                .map(x -> x * 3 + 5)
-                .mapToInt(Integer::intValue)
+                .mapToInt(x -> x * 3 + 5)
                 .sum();
     }
 
@@ -53,33 +51,31 @@ public class Add {
     }
 
     public double getMedianOfEvenIndex(List<Integer> arrayList) {
-        List<Integer> sortedEvensList = getEvensStream(arrayList)
-                .sorted()
-                .collect(Collectors.toList());
+        List<Integer> sortedEvensList = arrayList.stream()
+                .filter(x -> x % 2 == 0)
+                .sorted().collect(Collectors.toList());
         int len = sortedEvensList.size();
         return len % 2 == 0
                 ? (double) (sortedEvensList.get(len / 2 - 1) + sortedEvensList.get(len / 2)) / 2
                 : (double) sortedEvensList.get((len - 1) / 2);
     }
 
-    private Stream<Integer> getEvensStream(List<Integer> arrayList) {
-        return arrayList.stream().filter(x -> x % 2 == 0);
-    }
-
     public double getAverageOfEvenIndex(List<Integer> arrayList) {
-        List<Integer> sortedEvensList = getEvensStream(arrayList).sorted().collect(Collectors.toList());
+        List<Integer> sortedEvensList = arrayList.stream()
+                .filter(x -> x % 2 == 0)
+                .sorted().collect(Collectors.toList());
         return (double) sortedEvensList.stream()
                 .mapToInt(Integer::intValue)
                 .sum() / sortedEvensList.size();
     }
 
     public boolean isIncludedInEvenIndex(List<Integer> arrayList, Integer specialElment) {
-        return getEvensStream(arrayList)
+        return arrayList.stream().filter(x1 -> x1 % 2 == 0)
                 .anyMatch(x -> x.equals(specialElment));
     }
 
     public List<Integer> getUnrepeatedFromEvenIndex(List<Integer> arrayList) {
-        return getEvensStream(arrayList)
+        return arrayList.stream().filter(x -> x % 2 == 0)
                 .distinct()
                 .collect(Collectors.toList());
     }
@@ -89,7 +85,7 @@ public class Add {
                 .collect(Collectors.partitioningBy(x -> x % 2 == 0));
         return Stream.concat(
                 evensAndOdds.get(true).stream().sorted(),
-                evensAndOdds.get(false).stream().sorted(Comparator.comparing(Integer::intValue).reversed()))
+                evensAndOdds.get(false).stream().sorted(Comparator.reverseOrder()))
                 .collect(Collectors.toList());
     }
 }

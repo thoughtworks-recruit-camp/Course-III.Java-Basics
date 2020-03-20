@@ -44,7 +44,7 @@ public class MyMap {
 
     public List<Integer> sortFromSmall() {
         return array.stream()
-                .sorted(Comparator.naturalOrder())
+                .sorted()
                 .collect(Collectors.toList());
     }
 

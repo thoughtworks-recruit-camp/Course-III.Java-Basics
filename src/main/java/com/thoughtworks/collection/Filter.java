@@ -41,6 +41,8 @@ public class Filter {
     }
 
     public List<Integer> getDifferentElements() {
-        return array.stream().distinct().collect(Collectors.toList());
+        return array.stream()
+                .distinct()
+                .collect(Collectors.toList());
     }
 }

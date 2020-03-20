@@ -53,8 +53,8 @@ public class Reduce {
                 .findFirst().orElse(-1);
     }
 
-    public boolean isEqual(List<Integer> arrayList2) {
-        return Objects.equals(arrayList, arrayList2);
+    public boolean isEqual(List<Integer> arrayList) {
+        return Objects.equals(this.arrayList, arrayList);
     }
 
     //实现接口SingleLink，然后再此函数内使用
