@@ -8,14 +8,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class StudentRepository extends BasicRepository<Student> {
-    public StudentRepository() {
-        super(Student.class);
-    }
-
     public List<Student> queryByClassIdOrderByIdDesc(String classId) throws SQLException {
-        String sql = String.format("%s WHERE class=%s ORDER BY id DESC", sqlFormatter.queryAllSql(), classId);
-        PreparedStatement statement = connection.prepareStatement(sql);
-        ResultSet resultSet = statement.executeQuery();
-        return dataUtil.makeEntities(resultSet);
+        String sql = String.format("%s WHERE class=? ORDER BY id DESC", sqlFormatter.queryAllSql());
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, classId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return dataUtil.makeEntities(resultSet);
+            }
+        }
     }
 }

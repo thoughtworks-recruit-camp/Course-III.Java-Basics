@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class App {
 
-    public static void main(String[] args) throws SQLException{
+    public static void main(String[] args) throws SQLException {
         // 创建一批学生
         Student student1 = new Student("001", "张三", "男", 2020, "1994-01-12", "1-13");
         Student student2 = new Student("002", "李四", "男", 2020, "1994-05-25", "1-1");
@@ -47,6 +47,18 @@ public class App {
         repository.queryAll().forEach(System.out::println);
 
         repository.setConnection(null);
+
+        Person person1 = new Person("0001", "A", "男", "1991-01-01");
+        Person person2 = new Person("0002", "B", "男", "1992-01-01");
+        Person person3 = new Person("0003", "C", "女", "1993-01-01");
+        Person person4 = new Person("0004", "D", "女", "1994-01-01");
+
+        PersonRepository personRepository = new PersonRepository();
+        personRepository.clear();
+        personRepository.setConnection(dbConnector.getConnection());
+        personRepository.saveAll(Arrays.asList(person1, person2, person3, person4));
+        personRepository.queryAll().forEach(System.out::println);
+        personRepository.setConnection(null);
         dbConnector.closeConnection();
     }
 }
