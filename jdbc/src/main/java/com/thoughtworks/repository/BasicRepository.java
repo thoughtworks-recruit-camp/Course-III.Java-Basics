@@ -41,14 +41,14 @@ public abstract class BasicRepository<E> {
         String insertSql = sqlFormatter.insertSql();
         try (PreparedStatement statement = connection.prepareStatement(insertSql)) {
             dataUtil.setValues(statement, entity);
-            statement.execute();
+            statement.executeUpdate();
         }
     }
 
     public final void delete(String id) throws SQLException {
         String deleteSql = sqlFormatter.deleteSql(id);
         try (PreparedStatement statement = connection.prepareStatement(deleteSql)) {
-            statement.execute();
+            statement.executeUpdate();
         }
     }
 
@@ -56,7 +56,7 @@ public abstract class BasicRepository<E> {
         String updateSql = sqlFormatter.updateSql(id);
         try (PreparedStatement statement = connection.prepareStatement(updateSql)) {
             dataUtil.setValues(statement, entity);
-            statement.execute();
+            statement.executeUpdate();
         }
     }
 
