@@ -1,6 +1,5 @@
 package com.thoughtworks.repository;
 
-
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
@@ -18,13 +17,14 @@ public final class DataUtil<E> {
     private final Method[] getters;
     private final Method[] setters;
 
-    public DataUtil(Class<E> entityClass){
+    public DataUtil(Class<E> entityClass) {
         this.entityClass = entityClass;
         getters = getGetters();
         setters = getSetters();
     }
 
-    public void setValues(PreparedStatement statement, E entity) throws InvocationTargetException, IllegalAccessException, SQLException {
+    @SneakyThrows({InvocationTargetException.class, IllegalAccessException.class})
+    public void setValues(PreparedStatement statement, E entity) throws SQLException {
         for (int i = 0, len = getters.length; i < len; i++) {
             Object data = getters[i].invoke(entity);
             Class<?> dataClass = data.getClass();
@@ -70,12 +70,12 @@ public final class DataUtil<E> {
     }
 
     @SneakyThrows({InvocationTargetException.class, IllegalAccessException.class, NoSuchMethodException.class, InstantiationException.class})
-    private E getEmptyEntity(){
+    private E getEmptyEntity() {
         return entityClass.getConstructor().newInstance();
     }
-    @SneakyThrows({NoSuchMethodException.class})
 
-    private Method[] getGetters(){
+    @SneakyThrows({NoSuchMethodException.class})
+    private Method[] getGetters() {
         Field[] fields = entityClass.getDeclaredFields();
         Method[] getters = new Method[fields.length];
         for (int i = 0; i < fields.length; i++) {

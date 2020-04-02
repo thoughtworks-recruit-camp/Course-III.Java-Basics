@@ -25,7 +25,8 @@ public class App {
             repository.setConnection(dbUtil.getConnection());
 
             // 保存所有学生
-            repository.saveAll(Arrays.asList(student1, student2, student3, student4, student5, student6, student7));
+            repository.saveAll(Arrays.asList(student1, student2, student3, student4, student5, student6));
+            repository.save(student7);
 
             // 查找所有学生并打印
             System.out.println("所有学生----------------------------------------------");

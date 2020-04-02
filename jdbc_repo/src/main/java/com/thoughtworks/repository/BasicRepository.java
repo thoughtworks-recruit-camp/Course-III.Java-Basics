@@ -1,8 +1,5 @@
 package com.thoughtworks.repository;
 
-import lombok.SneakyThrows;
-
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,7 +37,6 @@ public abstract class BasicRepository<E> implements AutoCloseable {
         }
     }
 
-    @SneakyThrows({InvocationTargetException.class, IllegalAccessException.class})
     public final void save(E entity) throws SQLException {
         String insertSql = sqlFormatter.insertSql();
         try (PreparedStatement statement = connection.prepareStatement(insertSql)) {
@@ -56,7 +52,6 @@ public abstract class BasicRepository<E> implements AutoCloseable {
         }
     }
 
-    @SneakyThrows({InvocationTargetException.class, IllegalAccessException.class})
     public final void updateByPK(String pk, E entity) throws SQLException{
         String updateSql = sqlFormatter.updateByPKSql(pk);
         try (PreparedStatement statement = connection.prepareStatement(updateSql)) {
