@@ -1,4 +1,4 @@
-package com.thoughtworks.legacyrepo;
+package com.thoughtworks.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

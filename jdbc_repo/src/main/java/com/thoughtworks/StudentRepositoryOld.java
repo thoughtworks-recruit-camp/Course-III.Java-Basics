@@ -1,4 +1,6 @@
-package com.thoughtworks.legacyrepo;
+package com.thoughtworks;
+
+import lombok.NoArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -10,7 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class StudentRepository implements AutoCloseable {
+@NoArgsConstructor
+public class StudentRepositoryOld implements AutoCloseable {
     private static final String INSERT_INTO = "INSERT INTO student(id, name, gender, entrance_year, birthday, class)";
     private static final String VALUE_TEMPLATE = "(?,?,?,?,?,?)";
     private static final String SELECT_ALL = "SELECT * FROM student";
@@ -18,13 +21,9 @@ public class StudentRepository implements AutoCloseable {
     private static final String DELETE_BY_ID = "DELETE FROM student WHERE id =?";
     private Connection connection;
 
-    public StudentRepository() {
-    }
-
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
-
 
     public void save(List<Student> students) throws SQLException {
         String valuesString = IntStream.range(0, students.size())
@@ -78,7 +77,6 @@ public class StudentRepository implements AutoCloseable {
 
     private List<Student> getStudentsFromQuery(PreparedStatement statement) throws SQLException {
         List<Student> resultList = new ArrayList<>();
-        ;
         try (ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 Student student = new Student();

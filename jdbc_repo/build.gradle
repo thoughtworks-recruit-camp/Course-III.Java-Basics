@@ -1,13 +1,17 @@
 plugins {
     id 'java'
+    id "io.freefair.lombok" version "4.1.6"
 }
 
-version 'unspecified'
+version '0.0.1'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
 }
 
 dependencies {
