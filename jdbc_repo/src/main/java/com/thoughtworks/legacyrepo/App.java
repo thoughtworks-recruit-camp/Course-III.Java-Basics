@@ -15,7 +15,7 @@ public class App {
         Student student6 = new Student("006", "吴兰", "女", 2019, "1995-06-09", "2-1");
         Student student7 = new Student("007", "李云", "男", 2019, "1993-08-11", "1-1");
 
-        try (DbUtil dbUtil = new DbUtil("jdbc:mysql://localhost:3306/jdbc_ demo?serverTimezone=UTC", "root", "root");
+        try (DbUtil dbUtil = new DbUtil("jdbc:mysql://localhost:3306/jdbc_demo?serverTimezone=UTC", "root", "root");
              StudentRepository repository = new StudentRepository()) {
             dbUtil.clear();
             repository.setConnection(dbUtil.getConnection());
