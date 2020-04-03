@@ -32,7 +32,6 @@ public class Console implements AutoCloseable {
     private final PrintStream out;
     private final AccountManager manager = new AccountManager();
     private final DbUtil dbUtil;
-    private final Printer printer = new Printer(this);
     private TreeMap<String, Method> menuItems;
 
     public Console(BasicScannerFilter in, PrintStream out, ConnectionParams connectionParams) {
@@ -59,7 +58,9 @@ public class Console implements AutoCloseable {
     public void run(boolean isAdmin) {
         getMenuItems(isAdmin);
         while (true) {
-            printer.printMenuItems();
+            out.println();
+            out.println("【提示：任何情况下可以输出“EXIT”来退出本系统】");
+            printMenuItems();
             String input = in.next();
             handleMainInput(input);
         }
@@ -166,7 +167,11 @@ public class Console implements AutoCloseable {
     }
 
     private void printMenuItems() {
-        printer.printMenuItems();
+        menuItems.forEach((key, value) ->
+                out.printf("%s: %s\n",
+                        key,
+                        value.getAnnotation(MenuItem.class).name()));
+        out.println("请输入你的选择：");
     }
 
     private void printRegisterSuccess(String userName) {
@@ -197,30 +202,5 @@ public class Console implements AutoCloseable {
     public void close() throws SQLException {
         manager.close();
         dbUtil.close();
-    }
-
-    public TreeMap<String, Method> getMenuItems() {
-        return menuItems;
-    }
-
-    public PrintStream getOut() {
-        return out;
-    }
-
-    public static class Printer {
-        private final Console console;
-
-        public Printer(Console console) {
-            this.console = console;
-        }
-
-        public void printMenuItems() {
-            console.getOut().println();
-            console.getMenuItems().forEach((key, value) ->
-                    console.getOut().printf("%s: %s\n",
-                            key,
-                            value.getAnnotation(MenuItem.class).name()));
-            console.getOut().println("请输入你的选择：");
-        }
     }
 }

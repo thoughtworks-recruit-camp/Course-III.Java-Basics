@@ -5,7 +5,7 @@ import com.thoughtworks.repository.ConnectionParams;
 
 import java.io.IOException;
 
-public class ConsoleServerDemo {
+public class RemoteServer {
     public static void main(String[] args) throws IOException {
         ConsoleServer server = new ConsoleServer(25600);
         ConnectionParams connectionParams = new ConnectionParams(
