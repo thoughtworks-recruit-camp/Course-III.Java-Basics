@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
-public abstract class BasicRepository<E> {
+public abstract class BasicRepository<E> implements AutoCloseable {
     protected final Class<E> entityClass;
     protected Connection connection;
     protected final SqlFormatter<E> sqlFormatter;
     protected final DataUtil<E> dataUtil;
+
 
     @SuppressWarnings("unchecked")
     public BasicRepository() {
@@ -40,8 +41,8 @@ public abstract class BasicRepository<E> {
         }
     }
 
-    public final void deleteById(String id) throws SQLException {
-        String deleteSql = sqlFormatter.deleteByPKSql(id);
+    public final void deleteByPk(String pk) throws SQLException {
+        String deleteSql = sqlFormatter.deleteByPKSql(pk);
         try (PreparedStatement statement = connection.prepareStatement(deleteSql)) {
             statement.executeUpdate();
         }
@@ -62,6 +63,7 @@ public abstract class BasicRepository<E> {
             return dataUtil.makeEntities(resultSet);
         }
     }
+
     public final Optional<E> queryByPK(String pk) throws SQLException {
         String queryAllSql = sqlFormatter.queryByPKSql(pk);
         try (PreparedStatement statement = connection.prepareStatement(queryAllSql);
@@ -76,5 +78,10 @@ public abstract class BasicRepository<E> {
              ResultSet resultSet = statement.executeQuery()) {
             return dataUtil.makeEntities(resultSet).stream().findFirst();
         }
+    }
+
+    @Override
+    public void close() {
+        setConnection(null);
     }
 }

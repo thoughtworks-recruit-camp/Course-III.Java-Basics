@@ -6,6 +6,8 @@ import com.thoughtworks.account.Utils;
 import com.thoughtworks.account.LoginData;
 import com.thoughtworks.account.RegisterData;
 import com.thoughtworks.account.errors.*;
+import com.thoughtworks.repository.ConnectionParams;
+import com.thoughtworks.repository.DbUtil;
 import lombok.SneakyThrows;
 
 import java.io.InputStream;
@@ -21,27 +23,30 @@ import java.util.stream.Collectors;
 
 import static com.thoughtworks.account.controller.ConsolePrompts.*;
 
-public class Console {
+public class Console implements AutoCloseable {
     private final ScannerFilter in;
     private final PrintStream out;
-    private TreeMap<String, Method> menuItems;
     private final AccountManager manager = new AccountManager();
+    private final DbUtil dbUtil;
+    private TreeMap<String, Method> menuItems;
+    private Connection connection;
 
-    public Console() {
-        this(new BasicScannerFilter(new Scanner(System.in)), System.out);
-    }
-
-
-    public Console(BasicScannerFilter in, PrintStream out) {
+    public Console(BasicScannerFilter in, PrintStream out, ConnectionParams connectionParams) {
         this.in = in;
         this.out = out;
-    }
-    public Console(InputStream in, OutputStream out) {
-        this.in = new BasicScannerFilter(new Scanner(in));
-        this.out = new PrintStream (out);
+        this.dbUtil = new DbUtil(connectionParams);
     }
 
-    public void setConnection(Connection connection) {
+    public Console(InputStream in, OutputStream out, ConnectionParams connectionParams) {
+        this(new BasicScannerFilter(new Scanner(in)), new PrintStream(out), connectionParams);
+    }
+
+    public Console(ConnectionParams connectionParams) {
+        this(new BasicScannerFilter(new Scanner(System.in)), System.out, connectionParams);
+    }
+
+    public void initConnection() throws SQLException {
+        connection = dbUtil.getConnection();
         manager.setConnection(connection);
     }
 
@@ -56,7 +61,7 @@ public class Console {
                         (m1, m2) -> m1,
                         TreeMap::new));
         while (true) {
-            printMenuItems(isAdmin);
+            printMenuItems();
             String input = in.next();
             handleMainInput(input);
         }
@@ -120,6 +125,7 @@ public class Console {
                 out.println(USERNAME_PASSWORD_MISMATCH);
             } catch (MaxTriesExceeded maxTriesExceeded) {
                 out.println(maxTriesExceeded.getMessage());
+                break;
             }
         }
     }
@@ -129,12 +135,28 @@ public class Console {
         throw new ExitEvent();
     }
 
-    @MenuItem(serial = "4", name = "Test", isAdmin = true)
-    private void test() {
-        System.out.println("test");
+    @MenuItem(serial = "4", name = "清除所有数据", isAdmin = true)
+    private void truncate() throws SQLException {
+        if (isVerified()) {
+            dbUtil.clearTable("account_info");
+            dbUtil.clearTable("account_security");
+        }
     }
 
-    private void printMenuItems(boolean isAdmin) {
+    @MenuItem(serial = "5", name = "重置用户密码尝试次数", isAdmin = true)
+    private void reset() throws SQLException {
+        out.println("请输入需要重置密码尝试次数的用户名：");
+        String input = in.next();
+        try {
+            manager.resetTriesLeft(input);
+            out.println("操作成功");
+        } catch (UserNotFound e) {
+            out.println(e.getMessage());
+            out.println("操作失败");
+        }
+    }
+
+    private void printMenuItems() {
         out.println();
         menuItems.forEach((key, value) ->
                 out.printf("%s: %s\n",
@@ -149,5 +171,23 @@ public class Console {
                 info.getUserName(),
                 info.getPhoneNumber(),
                 info.getEMail()));
+    }
+
+    private boolean isVerified() {
+        String verifyCode = String.valueOf(Math.abs(new Random().nextInt()));
+        out.printf("请准确输入下列数字并回车以确认操作: [%s]\n", verifyCode);
+        if (in.next().equals(verifyCode)) {
+            out.println("操作成功");
+            return true;
+        }
+        out.println("确认失败，已取消操作");
+        return false;
+    }
+
+    @Override
+    public void close() throws SQLException {
+        connection = null;
+        manager.close();
+        dbUtil.close();
     }
 }

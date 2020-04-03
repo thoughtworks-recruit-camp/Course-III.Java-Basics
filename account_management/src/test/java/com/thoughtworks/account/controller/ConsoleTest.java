@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ConsoleTest {
-    private static DbUtil testConnector = TestUtil.getTestDbUtil();
     private static ByteArrayOutputStream allOutput = new ByteArrayOutputStream(102400);
 
     private ByteArrayOutputStream tempOutput = new ByteArrayOutputStream(10240);
@@ -49,13 +48,12 @@ class ConsoleTest {
         mockIn = mock(EmptyStringIterator.class);
         PrintStream testPrint = new PrintStream(tempOutput);
         TestScannerFilter testScannerWrapper = new TestScannerFilter(mockIn, testPrint);
-        testController = new Console(testScannerWrapper, testPrint);
-        testController.setConnection(testConnector.getConnection());
+        testController = new Console(testScannerWrapper, testPrint,TestUtil.getTestConnParams());
+        testController.initConnection();
     }
 
     @AfterEach
     void tearDown() throws IOException {
-        testController.setConnection(null);
         tempOutput.writeTo(allOutput);
         tempOutput.reset();
         String SplitLine = String.join("", Collections.nCopies(80, "-")) + "\n";

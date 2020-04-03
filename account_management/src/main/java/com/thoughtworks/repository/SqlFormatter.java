@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public final class SqlFormatter<E> {
@@ -12,15 +14,19 @@ public final class SqlFormatter<E> {
     private final String pKName;  // Currently only allow for String PK
 
     SqlFormatter(Class<E> entityClass) {
-        tableName = toSqlIdentifier(entityClass.getSimpleName());
+        tableName = Optional.ofNullable(entityClass.getAnnotation(Table.class))
+                .map(Table::value)
+                .orElse(toSqlIdentifier(entityClass.getSimpleName()));
+        Function<Field, String> getColumnName = (Field field) ->
+                Optional.ofNullable(field.getAnnotation(Column.class))
+                        .map(Column::value)
+                        .orElse(toSqlIdentifier(field.getName()));
         columnNames = Arrays.stream(entityClass.getDeclaredFields())
-                .map(Field::getName)
-                .map(SqlFormatter::toSqlIdentifier)
+                .map(getColumnName)
                 .collect(Collectors.toList());
         pKName = Arrays.stream(entityClass.getDeclaredFields())
                 .filter(field -> field.getAnnotation(PrimaryKey.class) != null)
-                .map(Field::getName)
-                .map(SqlFormatter::toSqlIdentifier)
+                .map(getColumnName)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Primary key not defined"));
     }

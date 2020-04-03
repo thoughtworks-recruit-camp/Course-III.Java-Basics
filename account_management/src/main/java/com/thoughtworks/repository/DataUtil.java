@@ -23,8 +23,8 @@ public final class DataUtil<E> {
         setters = getSetters();
     }
 
-    @SneakyThrows
-    public void setValues(PreparedStatement statement, E entity) {
+    @SneakyThrows({InvocationTargetException.class, IllegalAccessException.class})
+    public void setValues(PreparedStatement statement, E entity) throws SQLException {
         for (int i = 0, len = getters.length; i < len; i++) {
             Object data = getters[i].invoke(entity);
             Class<?> dataClass = data.getClass();
@@ -41,8 +41,7 @@ public final class DataUtil<E> {
         }
     }
 
-    @SneakyThrows
-    public List<E> makeEntities(ResultSet resultSet) {
+    public List<E> makeEntities(ResultSet resultSet) throws SQLException {
         List<E> resultList = new ArrayList<>();
         while (resultSet.next()) {
             resultList.add(makeEntity(resultSet));
@@ -51,7 +50,8 @@ public final class DataUtil<E> {
     }
 
     @SuppressWarnings("PrimitiveArrayArgumentToVarargsMethod")
-    private E makeEntity(ResultSet resultSet) throws SQLException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+    @SneakyThrows({InvocationTargetException.class, IllegalAccessException.class})
+    private E makeEntity(ResultSet resultSet) throws SQLException {
         E entity = getEmptyEntity();
         for (int i = 0, len = setters.length; i < len; i++) {
             Class<?> filedType = setters[i].getParameterTypes()[0];
@@ -69,22 +69,25 @@ public final class DataUtil<E> {
         return entity;
     }
 
-    private E getEmptyEntity() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    @SneakyThrows({InvocationTargetException.class, IllegalAccessException.class, NoSuchMethodException.class, InstantiationException.class})
+    private E getEmptyEntity() {
         return entityClass.getConstructor().newInstance();
     }
 
-    @SneakyThrows(NoSuchMethodException.class)
+    @SneakyThrows({NoSuchMethodException.class})
     private Method[] getGetters() {
         Field[] fields = entityClass.getDeclaredFields();
         Method[] getters = new Method[fields.length];
         for (int i = 0; i < fields.length; i++) {
-            String getterName = getAccessorName(fields[i].getName(), "get");
+            Field field = fields[i];
+            String prefix = getGetterPrefix(field);
+            String getterName = getAccessorName(field.getName(), prefix);
             getters[i] = entityClass.getMethod(getterName);
         }
         return getters;
     }
 
-    @SneakyThrows(NoSuchMethodException.class)
+    @SneakyThrows({NoSuchMethodException.class})
     private Method[] getSetters() {
         Field[] fields = entityClass.getDeclaredFields();
         Method[] setters = new Method[fields.length];
@@ -96,7 +99,17 @@ public final class DataUtil<E> {
         return setters;
     }
 
-    private static String getAccessorName(String fieldName, String getOrSet) {
-        return getOrSet + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+    private static String getGetterPrefix(Field field) {
+        String prefix;
+        if (field.getType().equals(boolean.class) || field.getType().equals(Boolean.class)) {
+            prefix = "is";
+        } else {
+            prefix = "get";
+        }
+        return prefix;
+    }
+
+    private static String getAccessorName(String fieldName, String prefix) {
+        return prefix + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
     }
 }

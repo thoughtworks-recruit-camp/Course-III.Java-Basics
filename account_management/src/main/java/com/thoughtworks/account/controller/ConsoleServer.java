@@ -1,6 +1,7 @@
 package com.thoughtworks.account.controller;
 
 import com.thoughtworks.account.errors.ExitEvent;
+import com.thoughtworks.repository.ConnectionParams;
 import com.thoughtworks.repository.DbUtil;
 
 import java.io.*;
@@ -8,24 +9,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 
 public class ConsoleServer {
     private final int port;
     private DbUtil dbUtil;
-    private static String dbUrl;
-    private static String dbUserName;
-    private static String dbPassword;
+    private static ConnectionParams connectionParams;
 
     public ConsoleServer(int port) {
         this.port = port;
     }
 
-    public void setDbConnection(String url, String userName, String password) {
-        dbUrl = url;
-        dbUserName = userName;
-        dbPassword = password;
+    public void setDbConnection(ConnectionParams connectionParams) {
+        ConsoleServer.connectionParams = connectionParams;
     }
 
     public void run() throws IOException {
@@ -47,13 +43,12 @@ public class ConsoleServer {
         @Override
         public void run() {
             try (InputStream rawIn = socket.getInputStream();
-                 OutputStream out = socket.getOutputStream();
-                 DbUtil dbUtil = new DbUtil(dbUrl, dbUserName, dbPassword)) {
+                 OutputStream out = socket.getOutputStream()) {
                 System.out.printf("Connection from: %s:%d\n", socket.getInetAddress().getCanonicalHostName(), socket.getPort());
-                Console controller = new Console(rawIn, out);
-                controller.setConnection(dbUtil.getConnection());
+                Console console = new Console(rawIn, out, connectionParams);
+                console.initConnection();
                 try {
-                    controller.run();
+                    console.run();
                 } catch (ExitEvent e) {
                     out.write("EXIT".getBytes());
                     out.flush();
@@ -61,7 +56,6 @@ public class ConsoleServer {
                     socket.close();
                     System.out.println("Connection closed.");
                 }
-                controller.setConnection(null);
             } catch (IOException e) {
                 System.out.println("Connection lost due to IOException.");
             } catch (SQLException e) {

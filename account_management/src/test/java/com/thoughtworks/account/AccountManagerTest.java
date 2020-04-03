@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AccountManagerTest {
     private static AccountManager testManager = new AccountManager();
-    private static DbUtil testConnector = TestUtil.getTestDbUtil();
+    private static DbUtil testConnector = new DbUtil(TestUtil.getTestConnParams());
 
     @BeforeAll
     static void beforeAll() throws InvalidFormat, SQLException, UserAlreadyExists, InvalidField {

@@ -6,12 +6,14 @@ import com.thoughtworks.account.errors.UserAlreadyExists;
 import com.thoughtworks.account.errors.UserNotFound;
 
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class AccountManager {
+public final class AccountManager implements AutoCloseable {
     private final AccountInfoRepository infoRepository;
     private final AccountSecurityRepository securityRepository;
     public static final int MAX_TRIES = 3;
@@ -52,6 +54,10 @@ public final class AccountManager {
         return infoRepository.queryByPKExclusive(loginFields.getUserName());
     }
 
+    public void resetTriesLeft(String userName) throws UserNotFound, SQLException {
+        securityRepository.setTriesLeft(userName, MAX_TRIES);
+    }
+
     // 使用事务进行查询剩余次数->验证密码->更新剩余次数，加行锁防止多个进程同时尝试验证密码
     private boolean isVerifiedLogin(LoginData loginFields) throws SQLException, UserNotFound, MaxTriesExceeded {
         securityRepository.beginTransaction();
@@ -80,5 +86,11 @@ public final class AccountManager {
         } finally {
             securityRepository.endTransaction();
         }
+    }
+
+    @Override
+    public void close() {
+        infoRepository.close();
+        securityRepository.close();
     }
 }
