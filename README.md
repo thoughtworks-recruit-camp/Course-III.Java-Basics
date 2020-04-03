@@ -36,3 +36,4 @@
 * **1. SimplePractice Feb 28th, 2020**->[`Branch: Share-Simple-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/Share-Simple-Practice)
 * **2. CollectionPractice Mar 13th, 2020**->[`Branch: Share-Collection-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/Share-Collection-Practice)
 * **3. RecursionPractice Mar 20th, 2020**->[`Branch: Share-Recursion-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/Share-Recursion-Practice)
+* **4. JDBC Repo Session Apr 3rd, 2020**->[`Branch: Share-JDBC-Repo`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/Share-JDBC-Repo)
