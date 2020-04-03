@@ -28,9 +28,12 @@
 * **IV.1 Lambda Practice**->[`Branch: IV.1-Lambda-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/IV.1-Lambda-Practice)
 * **IV.2 Stream Practice**->[`Branch: IV.2-Stream-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/IV.2-Stream-Practice)
 * **IV.4 Person Info / Java8 Practice**->[`Branch: IV.4-Person-Info-Java8`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/IV.4-Person-Info-Java8)
-#### DB Section II
+#### DB Related
 * **DB-II.1 JDBC Practice**->[`Branch: DB-II.1-JDBC`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/DB-II.1-JDBC)
+* **DB-II.6 Account Management**->[`Branch: DB-II.6-Account-Management`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/DB-II.6-Account-Management)
+
 #### Shares
 * **1. SimplePractice Feb 28th, 2020**->[`Branch: Share-Simple-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/Share-Simple-Practice)
 * **2. CollectionPractice Mar 13th, 2020**->[`Branch: Share-Collection-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/Share-Collection-Practice)
 * **3. RecursionPractice Mar 20th, 2020**->[`Branch: Share-Recursion-Practice`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/Share-Recursion-Practice)
+* **4. JDBC Repo Session Apr 3rd, 2020**->[`Branch: Share-JDBC-Repo`](https://github.com/thoughtworks-recruit-camp/Course-III.Java-Basics/tree/Share-JDBC-Repo)
