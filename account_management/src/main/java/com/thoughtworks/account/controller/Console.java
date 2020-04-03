@@ -16,18 +16,23 @@ import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.thoughtworks.account.controller.ConsolePrompts.*;
 import static java.lang.String.format;
 
 public class Console implements AutoCloseable {
+    public static final MessageFormat CREATION_SUCCESS_FORMATTER  // 消息模板
+            = new MessageFormat("{0}, 恭喜你注册成功！");
+    public final static MessageFormat LOGIN_SUCCESS_FORMATTER
+            = new MessageFormat("{0}，欢迎回来！\n您的手机号是{1}，邮箱是{2}");
     private final ScannerFilter in;
     private final PrintStream out;
     private final AccountManager manager = new AccountManager();
     private final DbUtil dbUtil;
+    private final Printer printer = new Printer(this);
     private TreeMap<String, Method> menuItems;
 
     public Console(BasicScannerFilter in, PrintStream out, ConnectionParams connectionParams) {
@@ -54,7 +59,7 @@ public class Console implements AutoCloseable {
     public void run(boolean isAdmin) {
         getMenuItems(isAdmin);
         while (true) {
-            printMenuItems();
+            printer.printMenuItems();
             String input = in.next();
             handleMainInput(input);
         }
@@ -75,46 +80,47 @@ public class Console implements AutoCloseable {
                 }
             }
         } else {
-            out.println(WRONG_OPTION);
+            out.println("输入错误，请重新选择:");
         }
     }
 
     @MenuItem(serial = "1", name = "注册")
     private void register() throws SQLException {
-        out.println(CREATION);
+        out.println("请输入注册信息(格式：用户名,手机号,邮箱,密码)：");
         while (true) {
             try {
                 RegisterData registerFields = Utils.parseInput(in.next(), RegisterData.class);
                 manager.createNewAccount(registerFields);
-                out.println(CREATION_SUCCESS_TEMPLATE.format(new String[]{registerFields.getUserName()}));
+                printRegisterSuccess(registerFields.getUserName());
                 break;
             } catch (InvalidFormat invalidFormat) {
-                out.println(INVALID_REGISTER_FORMAT);
+                out.println("格式错误\n请按正确格式输入注册信息：");
             } catch (InvalidField invalidField) {
                 out.println(invalidField.getMessage());
-                out.println(INVALID_REGISTER_FIELD);
+                out.println("请输入合法的注册信息：");
             } catch (UserAlreadyExists userAlreadyExists) {
                 out.println(userAlreadyExists.getMessage());
-                out.println(USER_EXISTS);
+                out.println("请更换用户名并重新输入注册信息：");
             }
         }
     }
 
+
     @MenuItem(serial = "2", name = "登录")
     private void login() throws SQLException {
-        out.println(LOGIN);
+        out.println("请输入用户名和密码(格式：用户名,密码)：");
         while (true) {
             try {
                 LoginData loginFields = Utils.parseInput(in.next(), LoginData.class);
                 printAccountInfo(Objects.requireNonNull(manager.getAccountInfo(loginFields).orElse(null)));
                 break;
             } catch (InvalidFormat invalidFormat) {
-                out.println(INVALID_LOGIN_FORMAT);
+                out.println("格式错误\n请按正确格式输入用户名和密码：");
             } catch (InvalidField invalidField) {
                 out.println(invalidField.getMessage());
-                out.println(INVALID_LOGIN_FIELD);
+                out.println("请输入合法的登录信息：");
             } catch (UserNotFound | WrongPassword mismatch) {
-                out.println(MISMATCH);
+                out.println("密码或用户名错误\n请重新输入用户名和密码：");
             } catch (MaxTriesExceeded maxTriesExceeded) {
                 out.println(maxTriesExceeded.getMessage());
                 break;
@@ -160,20 +166,20 @@ public class Console implements AutoCloseable {
     }
 
     private void printMenuItems() {
-        out.println();
-        menuItems.forEach((key, value) ->
-                out.printf("%s: %s\n",
-                        key,
-                        value.getAnnotation(MenuItem.class).name()));
-        out.println("请输入你的选择：");
+        printer.printMenuItems();
+    }
+
+    private void printRegisterSuccess(String userName) {
+        String message = CREATION_SUCCESS_FORMATTER.format(new String[]{userName});
+        out.println(message);
     }
 
     private void printAccountInfo(AccountInfo info) {
-        out.println(
-                LOGIN_SUCCESS_TEMPLATE.format(new String[]{info.getUserName(),
-                        info.getPhoneNumber(),
-                        info.getEMail()})
-               );
+        String message = LOGIN_SUCCESS_FORMATTER.format(new String[]{
+                info.getUserName(),
+                info.getPhoneNumber(),
+                info.getEMail()});
+        out.println(message);
     }
 
     private boolean isVerified() {
@@ -191,5 +197,30 @@ public class Console implements AutoCloseable {
     public void close() throws SQLException {
         manager.close();
         dbUtil.close();
+    }
+
+    public TreeMap<String, Method> getMenuItems() {
+        return menuItems;
+    }
+
+    public PrintStream getOut() {
+        return out;
+    }
+
+    public static class Printer {
+        private final Console console;
+
+        public Printer(Console console) {
+            this.console = console;
+        }
+
+        public void printMenuItems() {
+            console.getOut().println();
+            console.getMenuItems().forEach((key, value) ->
+                    console.getOut().printf("%s: %s\n",
+                            key,
+                            value.getAnnotation(MenuItem.class).name()));
+            console.getOut().println("请输入你的选择：");
+        }
     }
 }
