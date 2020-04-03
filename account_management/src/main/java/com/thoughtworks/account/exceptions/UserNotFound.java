@@ -1,4 +1,4 @@
-package com.thoughtworks.account.errors;
+package com.thoughtworks.account.exceptions;
 
 // 此异常提示信息不一定输出，而是与密码错误信息相互混淆
 public class UserNotFound extends Exception {

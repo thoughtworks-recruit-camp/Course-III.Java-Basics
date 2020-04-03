@@ -1,4 +1,4 @@
-package com.thoughtworks.account.errors;
+package com.thoughtworks.account.exceptions;
 
 public class InvalidField extends Exception {
     private final String fieldName;

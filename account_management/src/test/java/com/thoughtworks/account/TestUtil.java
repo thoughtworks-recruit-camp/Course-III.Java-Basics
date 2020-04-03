@@ -1,8 +1,8 @@
 package com.thoughtworks.account;
 
-import com.thoughtworks.account.errors.InvalidField;
-import com.thoughtworks.account.errors.InvalidFormat;
-import com.thoughtworks.account.errors.UserAlreadyExists;
+import com.thoughtworks.account.exceptions.InvalidField;
+import com.thoughtworks.account.exceptions.InvalidFormat;
+import com.thoughtworks.account.exceptions.UserAlreadyExists;
 import com.thoughtworks.repository.ConnectionParams;
 import com.thoughtworks.repository.DbUtil;
 

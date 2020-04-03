@@ -1,6 +1,6 @@
 package com.thoughtworks.account;
 
-import com.thoughtworks.account.errors.InvalidField;
+import com.thoughtworks.account.exceptions.InvalidField;
 
 enum Regex {
     UserNameRegex("^[A-Za-z0-9]{2,12}$", "用户名"),

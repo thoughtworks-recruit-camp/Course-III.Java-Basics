@@ -1,7 +1,7 @@
 package com.thoughtworks.account;
 
-import com.thoughtworks.account.errors.InvalidField;
-import com.thoughtworks.account.errors.InvalidFormat;
+import com.thoughtworks.account.exceptions.InvalidField;
+import com.thoughtworks.account.exceptions.InvalidFormat;
 
 public final class TestData {
     public static String registerInputA = "personA,13000000001,a@a,1234567a";

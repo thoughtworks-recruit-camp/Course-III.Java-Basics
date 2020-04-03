@@ -1,13 +1,11 @@
 package com.thoughtworks.account;
 
-import com.thoughtworks.account.errors.WrongPassword;
-import com.thoughtworks.account.errors.MaxTriesExceeded;
-import com.thoughtworks.account.errors.UserAlreadyExists;
-import com.thoughtworks.account.errors.UserNotFound;
+import com.thoughtworks.account.exceptions.WrongPassword;
+import com.thoughtworks.account.exceptions.MaxTriesExceeded;
+import com.thoughtworks.account.exceptions.UserAlreadyExists;
+import com.thoughtworks.account.exceptions.UserNotFound;
 
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;

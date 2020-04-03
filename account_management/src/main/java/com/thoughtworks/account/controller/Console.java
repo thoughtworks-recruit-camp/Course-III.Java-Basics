@@ -5,7 +5,7 @@ import com.thoughtworks.account.AccountInfo;
 import com.thoughtworks.account.Utils;
 import com.thoughtworks.account.LoginData;
 import com.thoughtworks.account.RegisterData;
-import com.thoughtworks.account.errors.*;
+import com.thoughtworks.account.exceptions.*;
 import com.thoughtworks.repository.ConnectionParams;
 import com.thoughtworks.repository.DbUtil;
 import lombok.SneakyThrows;

@@ -1,6 +1,6 @@
 package com.thoughtworks.account.controller;
 
-import com.thoughtworks.account.errors.ExitEvent;
+import com.thoughtworks.account.exceptions.ExitEvent;
 import com.thoughtworks.repository.ConnectionParams;
 import com.thoughtworks.repository.DbUtil;
 

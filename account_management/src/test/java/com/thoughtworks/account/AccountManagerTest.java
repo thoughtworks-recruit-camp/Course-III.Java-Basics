@@ -1,7 +1,7 @@
 package com.thoughtworks.account;
 
 import com.thoughtworks.repository.DbUtil;
-import com.thoughtworks.account.errors.*;
+import com.thoughtworks.account.exceptions.*;
 import org.junit.jupiter.api.*;
 
 import java.sql.SQLException;

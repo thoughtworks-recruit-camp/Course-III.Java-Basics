@@ -2,10 +2,10 @@ package com.thoughtworks.account.controller;
 
 import com.thoughtworks.account.TestData;
 import com.thoughtworks.account.TestUtil;
-import com.thoughtworks.account.errors.ExitEvent;
-import com.thoughtworks.account.errors.InvalidField;
-import com.thoughtworks.account.errors.InvalidFormat;
-import com.thoughtworks.account.errors.UserAlreadyExists;
+import com.thoughtworks.account.exceptions.ExitEvent;
+import com.thoughtworks.account.exceptions.InvalidField;
+import com.thoughtworks.account.exceptions.InvalidFormat;
+import com.thoughtworks.account.exceptions.UserAlreadyExists;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 

@@ -1,7 +1,7 @@
 package com.thoughtworks;
 
 import com.thoughtworks.account.controller.Console;
-import com.thoughtworks.account.errors.ExitEvent;
+import com.thoughtworks.account.exceptions.ExitEvent;
 import com.thoughtworks.repository.ConnectionParams;
 
 import java.sql.SQLException;

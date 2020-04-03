@@ -2,8 +2,8 @@ package com.thoughtworks.account.security;
 
 import com.thoughtworks.account.EncryptedPassword;
 import com.thoughtworks.account.LoginData;
-import com.thoughtworks.account.errors.MaxTriesExceeded;
-import com.thoughtworks.account.errors.UserNotFound;
+import com.thoughtworks.account.exceptions.MaxTriesExceeded;
+import com.thoughtworks.account.exceptions.UserNotFound;
 import com.thoughtworks.account.Cypher;
 
 import java.sql.Connection;

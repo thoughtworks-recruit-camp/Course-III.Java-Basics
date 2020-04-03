@@ -1,6 +1,6 @@
 package com.thoughtworks.account;
 
-import com.thoughtworks.account.errors.UserNotFound;
+import com.thoughtworks.account.exceptions.UserNotFound;
 import com.thoughtworks.repository.BasicRepository;
 
 import java.sql.SQLException;

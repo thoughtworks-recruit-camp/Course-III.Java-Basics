@@ -1,6 +1,6 @@
 package com.thoughtworks.account;
 
-import com.thoughtworks.account.errors.InvalidField;
+import com.thoughtworks.account.exceptions.InvalidField;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
