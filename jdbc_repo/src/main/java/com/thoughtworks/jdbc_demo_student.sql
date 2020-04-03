@@ -1,4 +1,4 @@
-CREATE DATABASE jdbc_demo;
+CREATE DATABASE jdbc_demo CHARSET UTF8;
 USE jdbc_demo;
 CREATE TABLE student
 (

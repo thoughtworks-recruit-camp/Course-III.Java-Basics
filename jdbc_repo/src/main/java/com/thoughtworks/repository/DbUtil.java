@@ -22,9 +22,9 @@ public class DbUtil implements AutoCloseable {
         return connection;
     }
 
-    public void clear() throws SQLException {
+    public void clear(String tableName) throws SQLException {
         refreshConnection();
-        connection.prepareStatement("TRUNCATE student").execute();
+        connection.prepareStatement(String.format("TRUNCATE %s", tableName)).execute();
     }
 
     public void refreshConnection() throws SQLException {

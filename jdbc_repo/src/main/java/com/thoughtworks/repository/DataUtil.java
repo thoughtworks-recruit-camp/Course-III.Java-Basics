@@ -27,16 +27,10 @@ public final class DataUtil<E> {
     public void setValues(PreparedStatement statement, E entity) throws SQLException {
         for (int i = 0, len = getters.length; i < len; i++) {
             Object data = getters[i].invoke(entity);
-            Class<?> dataClass = data.getClass();
-            int paramIndex = i + 1;
-            if (dataClass == Integer.class) {
-                statement.setInt(paramIndex, (Integer) data);
-            } else if (dataClass == String.class) {
-                statement.setString(paramIndex, (String) data);
-            } else if (dataClass == byte[].class) {
-                statement.setBytes(paramIndex, (byte[]) data);
-            } else if (dataClass == Date.class) {
-                statement.setDate(paramIndex, new java.sql.Date(((Date) data).getTime()));
+            if (data.getClass() == Date.class) {
+                statement.setDate(i + 1, new java.sql.Date(((Date) data).getTime()));
+            } else {
+                statement.setObject(i + 1, data);
             }
         }
     }
@@ -49,22 +43,11 @@ public final class DataUtil<E> {
         return resultList;
     }
 
-    @SuppressWarnings("PrimitiveArrayArgumentToVarargsMethod")
     @SneakyThrows({InvocationTargetException.class, IllegalAccessException.class})
     private E makeEntity(ResultSet resultSet) throws SQLException {
         E entity = getEmptyEntity();
         for (int i = 0, len = setters.length; i < len; i++) {
-            Class<?> filedType = setters[i].getParameterTypes()[0];
-            int columnIndex = i + 1;
-            if (filedType == Integer.class) {
-                setters[i].invoke(entity, resultSet.getInt(columnIndex));
-            } else if (filedType == String.class) {
-                setters[i].invoke(entity, resultSet.getString(columnIndex));
-            } else if (filedType == byte[].class) {
-                setters[i].invoke(entity, resultSet.getBytes(columnIndex));
-            } else if (filedType == Date.class) {
-                setters[i].invoke(entity, resultSet.getDate(columnIndex));
-            }
+            setters[i].invoke(entity, resultSet.getObject(i + 1));
         }
         return entity;
     }
@@ -93,8 +76,7 @@ public final class DataUtil<E> {
         Method[] setters = new Method[fields.length];
         for (int i = 0; i < fields.length; i++) {
             String setterName = getAccessorName(fields[i].getName(), "set");
-            Class<?> setterParamType = fields[i].getType();
-            setters[i] = entityClass.getMethod(setterName, setterParamType);
+            setters[i] = entityClass.getMethod(setterName, Object.class);
         }
         return setters;
     }

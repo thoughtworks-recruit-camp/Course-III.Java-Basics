@@ -5,7 +5,7 @@ import com.thoughtworks.repository.DbUtil;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-public class App {
+public class AppStudent {
 
     public static void main(String[] args) throws SQLException {
         // 创建一批学生
@@ -21,7 +21,7 @@ public class App {
              StudentRepositoryNew repository = new StudentRepositoryNew()) {  // FIXME
 //            StudentRepositoryOld repository = new StudentRepositoryOld()) {  // FIXME
 
-            dbUtil.clear();
+            dbUtil.clear("student");
             repository.setConnection(dbUtil.getConnection());
 
             // 保存所有学生
