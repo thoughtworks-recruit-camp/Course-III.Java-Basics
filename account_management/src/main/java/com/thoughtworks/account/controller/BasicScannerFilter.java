@@ -5,8 +5,8 @@ import com.thoughtworks.account.errors.ExitEvent;
 import java.util.Iterator;
 
 class BasicScannerFilter extends ScannerFilter {
-    public BasicScannerFilter(Iterator<String> sc) {
-        super(sc);
+    public BasicScannerFilter(Iterator<String> scannerLike) {
+        super(scannerLike);
     }
 
     @Override

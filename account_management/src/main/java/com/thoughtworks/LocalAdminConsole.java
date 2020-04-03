@@ -3,12 +3,10 @@ package com.thoughtworks;
 import com.thoughtworks.account.controller.Console;
 import com.thoughtworks.account.errors.ExitEvent;
 import com.thoughtworks.repository.ConnectionParams;
-import com.thoughtworks.repository.DbUtil;
 
 import java.sql.SQLException;
 
-public class LocalConsole {
-
+public class LocalAdminConsole {
     public static void main(String[] args) throws SQLException {
         ConnectionParams connectionParams = new ConnectionParams(
                 "jdbc:mysql://localhost:3306/account_management_demo?serverTimezone=UTC",
@@ -24,4 +22,3 @@ public class LocalConsole {
         }
     }
 }
-

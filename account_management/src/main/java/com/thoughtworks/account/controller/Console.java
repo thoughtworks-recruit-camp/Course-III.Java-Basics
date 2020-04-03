@@ -15,13 +15,13 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.thoughtworks.account.controller.ConsolePrompts.*;
+import static java.lang.String.format;
 
 public class Console implements AutoCloseable {
     private final ScannerFilter in;
@@ -29,7 +29,6 @@ public class Console implements AutoCloseable {
     private final AccountManager manager = new AccountManager();
     private final DbUtil dbUtil;
     private TreeMap<String, Method> menuItems;
-    private Connection connection;
 
     public Console(BasicScannerFilter in, PrintStream out, ConnectionParams connectionParams) {
         this.in = in;
@@ -37,29 +36,23 @@ public class Console implements AutoCloseable {
         this.dbUtil = new DbUtil(connectionParams);
     }
 
+    // for socket server
     public Console(InputStream in, OutputStream out, ConnectionParams connectionParams) {
         this(new BasicScannerFilter(new Scanner(in)), new PrintStream(out), connectionParams);
     }
 
+    //for local console
     public Console(ConnectionParams connectionParams) {
         this(new BasicScannerFilter(new Scanner(System.in)), System.out, connectionParams);
     }
 
     public void initConnection() throws SQLException {
-        connection = dbUtil.getConnection();
-        manager.setConnection(connection);
+        manager.setConnection(dbUtil.getConnection());
     }
 
     @SuppressWarnings("InfiniteLoopStatement")
     public void run(boolean isAdmin) {
-        menuItems = Arrays.stream(this.getClass().getDeclaredMethods())
-                .filter(method -> method.getAnnotation(MenuItem.class) != null)
-                .filter(method -> !method.getAnnotation(MenuItem.class).isAdmin() || isAdmin)  // 按权限过滤
-                .collect(Collectors.toMap(
-                        method -> method.getAnnotation(MenuItem.class).serial(),
-                        Function.identity(),
-                        (m1, m2) -> m1,
-                        TreeMap::new));
+        getMenuItems(isAdmin);
         while (true) {
             printMenuItems();
             String input = in.next();
@@ -77,24 +70,23 @@ public class Console implements AutoCloseable {
             try {
                 menuItems.get(input).invoke(this);
             } catch (InvocationTargetException e) {
-                if (e.getTargetException() instanceof ExitEvent) {
+                if (e.getTargetException() instanceof ExitEvent) {  // 对反射调用方法抛出的ExitEvent进行解包
                     throw new ExitEvent();
                 }
             }
-
         } else {
-            out.println("输入错误，请重新选择");
+            out.println(WRONG_OPTION);
         }
     }
 
     @MenuItem(serial = "1", name = "注册")
     private void register() throws SQLException {
-        out.println(CREATION_PROMPT);
+        out.println(CREATION);
         while (true) {
             try {
                 RegisterData registerFields = Utils.parseInput(in.next(), RegisterData.class);
                 manager.createNewAccount(registerFields);
-                out.println(String.format(CREATION_SUCCESS_TEMPLATE, registerFields.getUserName()));
+                out.println(CREATION_SUCCESS_TEMPLATE.format(new String[]{registerFields.getUserName()}));
                 break;
             } catch (InvalidFormat invalidFormat) {
                 out.println(INVALID_REGISTER_FORMAT);
@@ -103,14 +95,14 @@ public class Console implements AutoCloseable {
                 out.println(INVALID_REGISTER_FIELD);
             } catch (UserAlreadyExists userAlreadyExists) {
                 out.println(userAlreadyExists.getMessage());
-                out.println(USER_EXISTS_PROMPT);
+                out.println(USER_EXISTS);
             }
         }
     }
 
     @MenuItem(serial = "2", name = "登录")
     private void login() throws SQLException {
-        out.println(LOGIN_PROMPT);
+        out.println(LOGIN);
         while (true) {
             try {
                 LoginData loginFields = Utils.parseInput(in.next(), LoginData.class);
@@ -122,7 +114,7 @@ public class Console implements AutoCloseable {
                 out.println(invalidField.getMessage());
                 out.println(INVALID_LOGIN_FIELD);
             } catch (UserNotFound | WrongPassword mismatch) {
-                out.println(USERNAME_PASSWORD_MISMATCH);
+                out.println(MISMATCH);
             } catch (MaxTriesExceeded maxTriesExceeded) {
                 out.println(maxTriesExceeded.getMessage());
                 break;
@@ -156,6 +148,17 @@ public class Console implements AutoCloseable {
         }
     }
 
+    private void getMenuItems(boolean isAdmin) {
+        menuItems = Arrays.stream(this.getClass().getDeclaredMethods())
+                .filter(method -> method.getAnnotation(MenuItem.class) != null)
+                .filter(method -> !method.getAnnotation(MenuItem.class).isAdmin() || isAdmin)  // 按权限过滤
+                .collect(Collectors.toMap(
+                        method -> method.getAnnotation(MenuItem.class).serial(),
+                        Function.identity(),
+                        (m1, m2) -> m1,
+                        TreeMap::new));
+    }
+
     private void printMenuItems() {
         out.println();
         menuItems.forEach((key, value) ->
@@ -166,11 +169,11 @@ public class Console implements AutoCloseable {
     }
 
     private void printAccountInfo(AccountInfo info) {
-        out.println(String.format(
-                LOGIN_SUCCESS_TEMPLATE,
-                info.getUserName(),
-                info.getPhoneNumber(),
-                info.getEMail()));
+        out.println(
+                LOGIN_SUCCESS_TEMPLATE.format(new String[]{info.getUserName(),
+                        info.getPhoneNumber(),
+                        info.getEMail()})
+               );
     }
 
     private boolean isVerified() {
@@ -186,7 +189,6 @@ public class Console implements AutoCloseable {
 
     @Override
     public void close() throws SQLException {
-        connection = null;
         manager.close();
         dbUtil.close();
     }

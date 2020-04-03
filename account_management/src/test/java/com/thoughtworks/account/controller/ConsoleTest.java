@@ -6,7 +6,6 @@ import com.thoughtworks.account.errors.ExitEvent;
 import com.thoughtworks.account.errors.InvalidField;
 import com.thoughtworks.account.errors.InvalidFormat;
 import com.thoughtworks.account.errors.UserAlreadyExists;
-import com.thoughtworks.repository.DbUtil;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 
@@ -80,7 +79,7 @@ class ConsoleTest {
     @Test
     @Order(3)
     void should_prompt_wrong_option() {
-        List<String> expectedOutputs = asList("输入错误，请重新选择");
+        List<String> expectedOutputs = asList("输入错误，请重新选择:");
 
         when(mockIn.next()).thenReturn("4")
                 .thenReturn("EXIT");

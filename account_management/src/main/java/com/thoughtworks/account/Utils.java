@@ -26,7 +26,8 @@ public final class Utils {
         }
         SD data = dataType.getConstructor().newInstance();
         for (int i = 0; i < fields.length; i++) {
-            Optional<Regex> regex = Optional.ofNullable(fields[i].getAnnotation(Validate.class)).map(Validate::value);
+            Optional<Regex> regex = Optional.ofNullable(fields[i].getAnnotation(Validate.class))
+                    .map(Validate::value);
             if (regex.isPresent()) {
                 regex.get().validate(inputs[i]);
             }
