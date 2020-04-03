@@ -59,7 +59,7 @@ public class Console implements AutoCloseable {
         getMenuItems(isAdmin);
         while (true) {
             out.println();
-            out.println("【提示：任何情况下可以输出“EXIT”来退出本系统】");
+            out.println("【提示：任何情况下可以输入“EXIT”来退出本系统】");
             printMenuItems();
             String input = in.next();
             handleMainInput(input);
