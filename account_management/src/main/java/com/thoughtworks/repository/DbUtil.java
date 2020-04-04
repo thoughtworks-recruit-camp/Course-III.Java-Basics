@@ -19,8 +19,8 @@ public class DbUtil implements AutoCloseable {
     }
 
     public void clearTable(String tableName) throws SQLException {
-        String format = String.format("TRUNCATE %s", tableName);
-        try (PreparedStatement statement = connection.prepareStatement(format)) {
+        String sql = String.format("TRUNCATE %s", tableName);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.execute();
         }
     }
